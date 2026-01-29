@@ -1,1 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Custom Order Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* ========= SOFT MODERN THEME ========= */
+    :root {
+      --bg-soft: #f7f7f9;
+      --panel-bg: #ffffff;
+      --border: #e3e3e8;
+      --text-main: #333333;
+      --accent-primary: #c9b7ff; /* lavender */
+      --accent-secondary: #bff2d5; /* mint */
+      --accent-peach: #ffd8c2;
+      --radius-lg: 12px;
+      --radius-md: 8px;
+      --shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.04);
+      --transition-fast: 0.18s ease-out;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top left, #fdfbff, #f7f7f9);
+      color: var(--text-main);
+    }
+
+    .app-root {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    .app-card {
+      background: var(--panel-bg);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .app-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .app-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-peach));
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .app-pill span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* LEFT PANEL (OPTIONS) */
+    .panel {
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      padding: 16px 16px 18px;
+      border: 1px solid var(--border);
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(201, 183, 255, 0.18);
+      color: #6b5bb5;
+      font-weight: 500;
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .field-label span.helper {
+      font-size: 0.75rem;
+      color: #777;
+      font-weight: 400;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      background: #fff;
+      transition: border-color var(--transition-fast),
+        box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    select:focus,
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(201, 183, 255, 0.25);
+      background: #fcfbff;
+    }
+
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .inline-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .inline-row > div {
+      flex: 1;
+    }
+
+    .file-input {
+      font-size: 0.85rem;
+    }
+
+    .preset-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .preset-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: #fff;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .preset-pill.active {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-color: transparent;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-peach));
+      box-shadow: 0 8px 18px rgba(201, 183, 255, 0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        filter var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(201, 183, 255, 0.45);
+      filter: brightness(1.03);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(201, 183, 255, 0.3);
+      filter: brightness(0.98);
+    }
+
+    .btn-primary span.icon {
+      font-size: 1.1rem;
+    }
+
+    .note {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    /* RIGHT PANEL (PREVIEW) */
+    .preview-panel {
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preview-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .preview-tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(191, 242, 213, 0.4);
+      color: #2f7a55;
+      font-weight: 500;
+    }
+
+    .preview-canvas {
+      position: relative;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #ffffff, #f0f0f7);
+      border: 1px solid var(--border);
+      min-height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .preview-product-shape {
+      width: 70%;
+      max-width: 260px;
+      aspect-ratio: 3 / 4;
+      border-radius: 24px;
+      background: #e5e5f0;
+      position: relative;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .preview-product-inner {
+      width: 88%;
+      height: 88%;
+      border-radius: 18px;
+      background: #ffffff;
+      border: 2px dashed rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8px;
+      font-size: 0.8rem;
+      color: #555;
+    }
+
+    .preview-overlay-text {
+      position: absolute;
+      inset: 18% 10%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #333;
+      padding: 4px;
+      pointer-events: none;
+    }
+
+    .preview-meta {
+      font-size: 0.8rem;
+      color: #555;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+    }
+
+    .preview-chip {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(201, 183, 255, 0.18);
+      font-size: 0.75rem;
+    }
+
+    .preview-summary {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .price-display {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #333;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-top: 10px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .error-text {
+      font-size: 0.8rem;
+      color: #b3261e;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-root">
+    <div class="app-card">
+      <div class="app-header">
+        <div>
+          <div class="app-title">Custom Order Builder</div>
+          <div style="font-size:0.8rem;color:#777;margin-top:2px;">
+            Choose a product, customize it, and submit your request.
+          </div>
+        </div>
+        <div class="app-pill">
+          <span></span> Live mockup • Soft Modern
+        </div>
+      </div>
+
+      <div class="layout">
+        <!-- LEFT: OPTIONS -->
+        <div class="panel">
+          <div class="panel-title">
+            Customize your order
+            <span class="panel-title-badge">Step 1–3</span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="productSelect">
+              Product
+              <span class="helper">Required</span>
+            </label>
+            <select id="productSelect">
+              <option value="">Select a product…</option>
+              <option value="tshirt">Custom T‑Shirt</option>
+              <option value="tote">Tote</option>
+              <option value="tumbler">Tumbler</option>
+              <option value="mug">Mug</option>
+              <option value="woodsign">Wood Sign</option>
+              <option value="seasonal">Seasonal</option>
+              <option value="edu">Educational Resource</option>
+            </select>
+          </div>
+
+          <div id="dynamicFields"></div>
+
+          <button id="submitBtn" class="btn-primary">
+            <span class="icon">➤</span>
+            Submit Custom Order
+          </button>
+          <div id="submitError" class="error-text" style="display:none;"></div>
+          <div class="note">
+            Your order details will be sent to our custom order form. We’ll follow up with confirmation and pricing.
+          </div>
+        </div>
+
+        <!-- RIGHT: PREVIEW -->
+        <div class="preview-panel">
+          <div class="preview-header">
+            <div class="preview-title">Live mockup</div>
+            <div class="preview-tag">Updates as you change options</div>
+          </div>
+
+          <div class="preview-canvas">
+            <div id="previewShape" class="preview-product-shape">
+              <div class="preview-product-inner" id="previewInner">
+                Select a product and options to see your mockup.
+              </div>
+              <div id="previewOverlayText" class="preview-overlay-text"></div>
+            </div>
+          </div>
+
+          <div id="previewMeta" class="preview-meta">
+            <div class="preview-chip">Product: —</div>
+            <div class="preview-chip">Size: —</div>
+            <div class="preview-chip">Color/Style: —</div>
+            <div class="preview-chip">Text: —</div>
+          </div>
+          <div id="previewSummary" class="preview-summary">
+            Your selections will appear here as a quick summary.
+          </div>
+
+          <div id="priceDisplay" class="price-display">
+            Your Price: $0.00
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ===========================
+       CONFIG: PRODUCTS & FIELDS
+       =========================== */
+
+    const productsConfig = {
+      tshirt: {
+        label: "Custom T‑Shirt",
+        type: "physical",
+        fields: [
+          {
+            id: "size",
+            label: "Size",
+            type: "select",
+            required: true,
+            options: ["S", "M", "L", "XL", "2XL", "3XL"],
+          },
+          {
+            id: "color",
+            label: "Color",
+            type: "select",
+            required: true,
+            options: ["White", "Black", "Pink", "Blue", "Gray", "Green", "Yellow"],
+          },
+          {
+            id: "designUpload",
+            label: "Design upload",
+            type: "file",
+            required: false,
+          },
+          {
+            id: "designPreset",
+            label: "Preset design",
+            type: "presets",
+            required: false,
+            options: ["Preset 1", "Preset 2", "Preset 3"],
+          },
+          {
+            id: "text",
+            label: "Text (optional)",
+            type: "text",
+            required: false,
+          },
+        ],
+      },
+      tote: {
+        label: "Tote",
+        type: "physical",
+        fields: [
+          {
+            id: "style",
+            label: "Style",
+            type: "select",
+            required: true,
+            options: ["A", "B", "C", "D", "E", "F"],
+          },
+          {
+            id: "size",
+            label: "Size",
+            type: "select",
+            required: true,
+            options: ["S", "M", "L"],
+          },
+          {
+            id: "color",
+            label: "Color",
+            type: "select",
+            required: true,
+            options: ["White", "Natural"],
+          },
+          {
+            id: "designUpload",
+            label: "Design upload",
+            type: "file",
+            required: false,
+          },
+          {
+            id: "designPreset",
+            label: "Preset design",
+            type: "presets",
+            required: false,
+            options: ["Preset 1", "Preset 2", "Preset 3"],
+          },
+          {
+            id: "text",
+            label: "Text (optional)",
+            type: "text",
+            required: false,
+          },
+        ],
+      },
+      tumbler: {
+        label: "Tumbler",
+        type: "physical",
+        fields: [
+          {
+            id: "size",
+            label: "Size",
+            type: "select",
+            required: true,
+            options: ["20oz", "30oz", "40oz"],
+          },
+          {
+            id: "color",
+            label: "Color",
+            type: "select",
+            required: true,
+            options: ["White", "Black", "Pink", "Blue", "Gray", "Green"],
+          },
+          {
+            id: "decal",
+            label: "Decal style",
+            type: "select",
+            required: true,
+            options: ["A", "B", "C", "D", "E", "F"],
+          },
+          {
+            id: "text",
+            label: "Text (max 6 words)",
+            type: "text",
+            required: false,
+            maxWords: 6,
+          },
+        ],
+      },
+      mug: {
+        label: "Mug",
+        type: "physical",
+        fields: [
+          {
+            id: "size",
+            label: "Size",
+            type: "select",
+            required: true,
+            options: ["11oz", "12oz", "13oz", "14oz", "15oz", "16oz", "17oz"],
+          },
+          {
+            id: "color",
+            label: "Color",
+            type: "select",
+            required: true,
+            options: ["White", "Black", "Pink", "Blue", "Gray", "Green"],
+          },
+          {
+            id: "decal",
+            label: "Decal style",
+            type: "select",
+            required: true,
+            options: ["A", "B", "C", "D", "E", "F"],
+          },
+          {
+            id: "text",
+            label: "Text (max 6 words)",
+            type: "text",
+            required: false,
+            maxWords: 6,
+          },
+        ],
+      },
+      woodsign: {
+        label: "Wood Sign",
+        type: "physical",
+        fields: [
+          {
+            id: "style",
+            label: "Style",
+            type: "select",
+            required: true,
+            options: ["A", "B", "C", "D", "E", "F"],
+          },
+          {
+            id: "size",
+            label: "Size",
+            type: "select",
+            required: true,
+            options: ["6x6", "6x8", "8x8", "12x12"],
+          },
+          {
+            id: "designUpload",
+            label: "Design upload",
+            type: "file",
+            required: false,
+          },
+          {
+            id: "designPreset",
+            label: "Preset design",
+            type: "presets",
+            required: false,
+            options: ["Preset 1", "Preset 2", "Preset 3"],
+          },
+          {
+            id: "text",
+            label: "Text (max 6 words)",
+            type: "text",
+            required: false,
+            maxWords: 6,
+          },
+          {
+            id: "description",
+            label: "Description",
+            type: "textarea",
+            required: false,
+          },
+        ],
+      },
+      seasonal: {
+        label: "Seasonal",
+        type: "physical",
+        fields: [
+          {
+            id: "style",
+            label: "Style",
+            type: "select",
+            required: true,
+            options: ["A", "B", "C", "D", "E", "F"],
+          },
+          {
+            id: "color",
+            label: "Color",
+            type: "select",
+            required: true,
+            options: ["White", "Black", "Pink", "Blue", "Gray", "Green"],
+          },
+          {
+            id: "decal",
+            label: "Decal style",
+            type: "select",
+            required: false,
+            options: ["A", "B", "C", "D", "E", "F"],
+          },
+          {
+            id: "text",
+            label: "Text (max 6 words)",
+            type: "text",
+            required: false,
+            maxWords: 6,
+          },
+        ],
+      },
+      edu: {
+        label: "Educational Resource",
+        type: "summary",
+        fields: [
+          {
+            id: "activityType",
+            label: "Activity type",
+            type: "select",
+            required: true,
+            options: ["A", "B", "C", "D", "E", "F"],
+          },
+          {
+            id: "topic",
+            label: "Topic",
+            type: "text",
+            required: true,
+          },
+          {
+            id: "ageGroup",
+            label: "Age group",
+            type: "select",
+            required: true,
+            options: ["Pre-K", "K", "1", "2", "3", "4", "5"],
+          },
+          {
+            id: "objective",
+            label: "Objective",
+            type: "textarea",
+            required: true,
+          },
+          {
+            id: "details",
+            label: "Additional details",
+            type: "textarea",
+            required: false,
+          },
+        ],
+      },
+    };
+
+    /* ===========================
+       DOM ELEMENTS
+       =========================== */
+
+    const productSelect = document.getElementById("productSelect");
+    const dynamicFields = document.getElementById("dynamicFields");
+    const previewShape = document.getElementById("previewShape");
+    const previewInner = document.getElementById("previewInner");
+    const previewOverlayText = document.getElementById("previewOverlayText");
+    const previewMeta = document.getElementById("previewMeta");
+    const previewSummary = document.getElementById("previewSummary");
+    const priceDisplay = document.getElementById("priceDisplay");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitError = document.getElementById("submitError");
+
+    let activePreset = null;
+
+    /* ===========================
+       RENDER FIELDS
+       =========================== */
+
+    function renderFields(productKey) {
+      dynamicFields.innerHTML = "";
+      activePreset = null;
+
+      if (!productKey || !productsConfig[productKey]) {
+        updatePreview();
+        return;
+      }
+
+      const config = productsConfig[productKey];
+
+      config.fields.forEach((field) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "field-group";
+
+        const label = document.createElement("label");
+        label.className = "field-label";
+        label.htmlFor = field.id;
+        label.textContent = field.label;
+        if (field.required) {
+          const helper = document.createElement("span");
+          helper.className = "helper";
+          helper.textContent = "Required";
+          label.appendChild(helper);
+        }
+
+        wrapper.appendChild(label);
+
+        if (field.type === "select") {
+          const select = document.createElement("select");
+          select.id = field.id;
+          const placeholder = document.createElement("option");
+          placeholder.value = "";
+          placeholder.textContent = "Select…";
+          select.appendChild(placeholder);
+          field.options.forEach((opt) => {
+            const o = document.createElement("option");
+            o.value = opt;
+            o.textContent = opt;
+            select.appendChild(o);
+          });
+          select.addEventListener("change", updatePreview);
+          wrapper.appendChild(select);
+        } else if (field.type === "text") {
+          const input = document.createElement("input");
+          input.type = "text";
+          input.id = field.id;
+          input.addEventListener("input", () => {
+            if (field.maxWords) {
+              const words = input.value.trim().split(/\s+/).filter(Boolean);
+              if (words.length > field.maxWords) {
+                input.value = words.slice(0, field.maxWords).join(" ");
+              }
+            }
+            updatePreview();
+          });
+          wrapper.appendChild(input);
+          if (field.maxWords) {
+            const note = document.createElement("div");
+            note.className = "note";
+            note.textContent = `Maximum ${field.maxWords} words.`;
+            wrapper.appendChild(note);
+          }
+        } else if (field.type === "textarea") {
+          const textarea = document.createElement("textarea");
+          textarea.id = field.id;
+          textarea.addEventListener("input", updatePreview);
+          wrapper.appendChild(textarea);
+        } else if (field.type === "file") {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.id = field.id;
+          input.className = "file-input";
+          input.addEventListener("change", updatePreview);
+          wrapper.appendChild(input);
+          const note = document.createElement("div");
+          note.className = "note";
+          note.textContent = "File upload is for reference; final file handling may occur via email.";
+          wrapper.appendChild(note);
+        } else if (field.type === "presets") {
+          const row = document.createElement("div");
+          row.className = "preset-row";
+          field.options.forEach((opt) => {
+            const pill = document.createElement("button");
+            pill.type = "button";
+            pill.className = "preset-pill";
+            pill.textContent = opt;
+            pill.addEventListener("click", () => {
+              activePreset = opt;
+              document
+                .querySelectorAll(".preset-pill")
+                .forEach((el) => el.classList.remove("active"));
+              pill.classList.add("active");
+              updatePreview();
+            });
+            row.appendChild(pill);
+          });
+          wrapper.appendChild(row);
+        }
+
+        dynamicFields.appendChild(wrapper);
+      });
+
+      updatePreview();
+    }
+
+    /* ===========================
+       PREVIEW & PRICING LOGIC
+       =========================== */
+
+    function getFieldValue(id) {
+      const el = document.getElementById(id);
+      if (!el) return "";
+      if (el.type === "file") {
+        return el.files && el.files.length ? el.files[0].name : "";
+      }
+      return el.value.trim();
+    }
+
+    function mapColorToHex(colorName) {
+      const map = {
+        White: "#ffffff",
+        Black: "#222222",
+        Pink: "#ffd6e8",
+        Blue: "#c7ddff",
+        Gray: "#dcdde3",
+        Green: "#c7f2d0",
+        Yellow: "#fff3b8",
+        Natural: "#f3e4cf",
+      };
+      return map[colorName] || "#e5e5f0";
+    }
+
+    function calculatePrice(productKey, values) {
+      let base = 0;
+      let addons = 0;
+
+      const basePrices = {
+        tshirt: 20,
+        tote: 15,
+        tumbler: 25,
+        mug: 12,
+        woodsign: 18,
+        seasonal: 15,
+        edu: 10,
+      };
+
+      base = basePrices[productKey] || 0;
+
+      // Shirt 2XL/3XL
+      if (productKey === "tshirt" && (values.size === "2XL" || values.size === "3XL")) {
+        addons += 3;
+      }
+
+      // Tumbler 40oz
+      if (productKey === "tumbler" && values.size === "40oz") {
+        addons += 4;
+      }
+
+      // Wood sign 12x12
+      if (productKey === "woodsign" && values.size === "12x12") {
+        addons += 5;
+      }
+
+      // Design upload
+      if (values.designUpload) {
+        addons += 5;
+      }
+
+      // Any text
+      if (values.text) {
+        addons += 2;
+      }
+
+      return base + addons;
+    }
+
+    function updatePreview() {
+      const productKey = productSelect.value;
+      const metaChips = previewMeta.querySelectorAll(".preview-chip");
+
+      if (!productKey || !productsConfig[productKey]) {
+        previewInner.textContent = "Select a product and options to see your mockup.";
+        previewOverlayText.textContent = "";
+        previewShape.style.background = "#e5e5f0";
+        previewShape.style.borderRadius = "24px";
+        previewShape.style.aspectRatio = "3 / 4";
+        previewSummary.textContent = "Your selections will appear here as a quick summary.";
+        priceDisplay.textContent = "Your Price: $0.00";
+        if (metaChips.length >= 4) {
+          metaChips[0].textContent = "Product: —";
+          metaChips[1].textContent = "Size: —";
+          metaChips[2].textContent = "Color/Style: —";
+          metaChips[3].textContent = "Text: —";
+        }
+        return;
+      }
+
+      const config = productsConfig[productKey];
+      const values = {};
+      config.fields.forEach((f) => {
+        values[f.id] = getFieldValue(f.id);
+      });
+
+      // Basic shape tweaks per product
+      if (productKey === "tshirt") {
+        previewShape.style.borderRadius = "32px";
+        previewShape.style.aspectRatio = "3 / 4";
+      } else if (productKey === "tote") {
+        previewShape.style.borderRadius = "18px";
+        previewShape.style.aspectRatio = "3 / 3.5";
+      } else if (productKey === "tumbler") {
+        previewShape.style.borderRadius = "40px";
+        previewShape.style.aspectRatio = "2.2 / 4";
+      } else if (productKey === "mug") {
+        previewShape.style.borderRadius = "26px";
+        previewShape.style.aspectRatio = "3.2 / 3";
+      } else if (productKey === "woodsign") {
+        previewShape.style.borderRadius = "18px";
+        previewShape.style.aspectRatio = "1 / 1";
+      } else if (productKey === "seasonal") {
+        previewShape.style.borderRadius = "20px";
+        previewShape.style.aspectRatio = "3 / 3.2";
+      } else if (productKey === "edu") {
+        previewShape.style.borderRadius = "18px";
+        previewShape.style.aspectRatio = "3.2 / 2.2";
+      }
+
+      // Background color
+      let bgColor = "#e5e5f0";
+      if (values.color) {
+        bgColor = mapColorToHex(values.color);
+      } else if (productKey === "woodsign") {
+        bgColor = "#f3e4cf";
+      } else if (productKey === "edu") {
+        bgColor = "#ffffff";
+      }
+      previewShape.style.background = bgColor;
+
+      // Inner text / overlay
+      if (config.type === "summary") {
+        previewInner.textContent = "Educational Resource Preview";
+        const lines = [];
+        if (values.activityType) lines.push(`Type: ${values.activityType}`);
+        if (values.topic) lines.push(`Topic: ${values.topic}`);
+        if (values.ageGroup) lines.push(`Age: ${values.ageGroup}`);
+        previewOverlayText.textContent = lines.join(" • ");
+      } else {
+        previewInner.textContent = activePreset
+          ? `Preset: ${activePreset}`
+          : values.designUpload
+          ? `Upload: ${values.designUpload}`
+          : "Design area";
+        previewOverlayText.textContent = values.text || "";
+      }
+
+      // Meta chips
+      if (metaChips.length >= 4) {
+        metaChips[0].textContent = `Product: ${config.label}`;
+        metaChips[1].textContent = `Size: ${values.size || "—"}`;
+        const colorOrStyle =
+          values.color ||
+          values.style ||
+          values.decal ||
+          values.activityType ||
+          "—";
+        metaChips[2].textContent = `Color/Style: ${colorOrStyle}`;
+        metaChips[3].textContent = `Text: ${
+          values.text || values.topic || "—"
+        }`;
+      }
+
+      // Summary
+      const summaryParts = [];
+      Object.keys(values).forEach((key) => {
+        if (!values[key]) return;
+        summaryParts.push(`${key}: ${values[key]}`);
+      });
+      previewSummary.textContent =
+        summaryParts.length > 0
+          ? summaryParts.join(" • ")
+          : "Your selections will appear here as a quick summary.";
+
+      // Price
+      const price = calculatePrice(productKey, values);
+      priceDisplay.textContent = `Your Price: $${price.toFixed(2)}`;
+    }
+
+    /* ===========================
+       SUBMISSION (GOOGLE FORM)
+       =========================== */
+
+    const GOOGLE_FORM_ACTION =
+      "https://docs.google.com/forms/d/e/1FAIpQLScH-FuWyor2EbAycUILHwh26gSB_0gC6293FN2BO-prP9WLWw/formResponse";
+
+    const formFieldMap = {
+      product: "entry.515910907",
+      size: "entry.1234215050",
+      colorOrStyle: "entry.1428791444",
+      text: "entry.445596758",
+      extra: "entry.918663237",
+    };
+
+    function buildFormPayload(productKey, values) {
+      const config = productsConfig[productKey];
+      const payload = new URLSearchParams();
+
+      const colorOrStyle =
+        values.color ||
+        values.style ||
+        values.decal ||
+        values.activityType ||
+        "";
+
+      const textValue = values.text || values.topic || "";
+
+      const extraParts = [];
+      Object.keys(values).forEach((k) => {
+        if (!values[k]) return;
+        if (["color", "style", "decal", "size", "text", "topic"].includes(k))
+          return;
+        extraParts.push(`${k}: ${values[k]}`);
+      });
+
+      payload.append(formFieldMap.product, config.label);
+      payload.append(formFieldMap.size, values.size || "");
+      payload.append(formFieldMap.colorOrStyle, colorOrStyle);
+      payload.append(formFieldMap.text, textValue);
+      payload.append(formFieldMap.extra, extraParts.join(" | "));
+
+      return payload;
+    }
+
+    function validateRequired(productKey, values) {
+      const config = productsConfig[productKey];
+      const missing = [];
+      config.fields.forEach((f) => {
+        if (!f.required) return;
+        const v = values[f.id];
+        if (!v) missing.push(f.label);
+      });
+      return missing;
+    }
+
+    submitBtn.addEventListener("click", () => {
+      submitError.style.display = "none";
+      submitError.style.color = "#b3261e";
+      submitError.textContent = "";
+
+      const productKey = productSelect.value;
+      if (!productKey || !productsConfig[productKey]) {
+        submitError.textContent = "Please select a product before submitting.";
+        submitError.style.display = "block";
+        return;
+      }
+
+      const config = productsConfig[productKey];
+      const values = {};
+      config.fields.forEach((f) => {
+        values[f.id] = getFieldValue(f.id);
+      });
+
+      const missing = validateRequired(productKey, values);
+      if (missing.length > 0) {
+        submitError.textContent =
+          "Please complete the required fields: " + missing.join(", ");
+        submitError.style.display = "block";
+        return;
+      }
+
+      const payload = buildFormPayload(productKey, values);
+
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+
+      iframe.addEventListener("load", () => {
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+        }, 1500);
+      });
+
+      iframe.src = GOOGLE_FORM_ACTION + "?" + payload.toString();
+
+      submitError.style.display = "block";
+      submitError.style.color = "#2f7a55";
+      submitError.textContent =
+        "Your custom order has been sent. We’ll follow up with details soon.";
+    });
+
+    /* ===========================
+       INIT
+       =========================== */
+
+    productSelect.addEventListener("change", () => {
+      renderFields(productSelect.value);
+    });
+
+    updatePreview();
+  </script>
+</body>
+</html>
 
