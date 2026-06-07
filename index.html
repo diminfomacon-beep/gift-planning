@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gift Planning Form</title>
+    <title>Gift Planning Framework</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         :root {
             --primary-color: #7d5a50;
@@ -18,7 +25,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Montserrat', sans-serif; 
         }
 
         body {
@@ -29,12 +36,48 @@
             justify-content: center;
         }
 
-        .container {
+        .master-wrapper {
             max-width: 1100px;
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Navigation Tab Bar Styling */
+        .form-toggle-navigation {
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 10px;
+        }
+
+        .nav-tab {
+            background: #f0e6e2;
+            color: var(--text-color);
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .container {
             display: grid;
             grid-template-columns: 3fr 1fr;
             gap: 25px;
+            width: 100%;
         }
 
         @media (max-width: 768px) {
@@ -50,9 +93,13 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
+        .form-header h1, .side-card h3 {
+            font-family: 'Playfair Display', serif; 
+            font-weight: 600;
+        }
+
         .form-header h1 {
             color: var(--primary-color);
-            font-family: Georgia, serif;
             font-size: 2rem;
             margin-bottom: 8px;
         }
@@ -83,13 +130,6 @@
             color: var(--primary-color);
             margin-bottom: 20px;
             font-weight: bold;
-        }
-
-        .section-num {
-            border: 1px solid var(--primary-color);
-            border-radius: 4px;
-            padding: 2px 6px;
-            font-size: 0.75rem;
         }
 
         .grid-2 {
@@ -180,34 +220,15 @@
             font-size: 1rem;
         }
 
-        .side-card ul {
-            list-style: none;
-        }
-
-        .side-card ul li {
-            margin-bottom: 15px;
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
         .fee-card {
             background: #fcdad7;
             text-align: center;
             font-weight: bold;
         }
 
-        .fee-price {
-            font-size: 1.4rem;
-            color: var(--primary-color);
-            margin: 5px 0;
-        }
-
         .quote-card {
             background: var(--accent-pink);
             text-align: center;
-            font-family: 'Georgia', serif;
-            font-style: italic;
         }
 
         .submit-btn {
@@ -220,6 +241,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.2s;
+            width: 100%;
         }
 
         .submit-btn:disabled {
@@ -230,265 +252,484 @@
 </head>
 <body>
 
-<div class="container">
-    <form class="main-form" id="giftForm">
-        <div class="form-header">
-            <h1>Gift Planning Form</h1>
-            <p>The more you share, the more personal and meaningful your gift will be. There are no right or wrong answers.</p>
-        </div>
+<div class="master-wrapper">
 
-        <section>
-            <div class="section-title"><span class="section-num">01</span> About You</div>
-            <div class="grid-3">
-                <div class="form-group">
-                    <label>Your Name <span>*</span></label>
-                    <input type="text" id="cust-name" placeholder="Enter your name" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address <span>*</span></label>
-                    <input type="email" id="cust-email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label>Phone Number <span>*</span></label>
-                    <input type="text" id="cust-phone" placeholder="Enter your phone number" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Preferred Contact Method <span>*</span></label>
-                <div class="radio-group">
-                    <div class="radio-item"><input type="radio" name="contact" id="txt" value="Text" checked><label for="txt">Text</label></div>
-                    <div class="radio-item"><input type="radio" name="contact" id="eml" value="Email"><label for="eml">Email</label></div>
-                    <div class="radio-item"><input type="radio" name="contact" id="cl" value="Phone Call"><label for="cl">Phone Call</label></div>
-                </div>
-            </div>
-        </section>
+    <div class="form-toggle-navigation">
+        <button type="button" id="tab-individual" class="nav-tab active" onclick="switchFormView('individual')">
+            <i data-lucide="user"></i> Single Custom Gift Plan
+        </button>
+        <button type="button" id="tab-bulk" class="nav-tab" onclick="switchFormView('bulk')">
+            <i data-lucide="building-2"></i> For Bulk Orders Click Here
+        </button>
+    </div>
 
-        <section>
-            <div class="section-title"><span class="section-num">02</span> Tell Me About Your Person</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Who is this gift for? <span>*</span></label>
-                    <input type="text" id="gift-for" placeholder="Who is this gift for?" required>
+    <div id="view-individual" style="display: block; width: 100%;">
+        <div class="container">
+            <form class="main-form" id="giftForm">
+                <div class="form-header">
+                    <h1>Gift Planning Form</h1>
+                    <p>The more you share, the more personal and meaningful your gift will be. There are no right or wrong answers.</p>
                 </div>
-                <div class="form-group">
-                    <label>What is their relationship to you? <span>*</span></label>
-                    <select id="relationship" required>
-                        <option value="">Select relationship</option>
-                        <option value="Spouse / Partner">Spouse / Partner</option>
-                        <option value="Parent">Parent</option>
-                        <option value="Friend">Friend</option>
-                        <option value="Child">Child</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Which age range best describes them? <span>*</span></label>
-                    <select id="age-range" required>
-                        <option value="">Select age range</option>
-                        <option value="Under 18">Under 18</option>
-                        <option value="19 - 30">19 - 30</option>
-                        <option value="31 - 50">31 - 50</option>
-                        <option value="51+">51+</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>What occasion are we celebrating? <span>*</span></label>
-                    <select id="occasion" required>
-                        <option value="">Select occasion</option>
-                        <option value="Birthday">Birthday</option>
-                        <option value="Anniversary">Anniversary</option>
-                        <option value="Holiday">Holiday</option>
-                        <option value="Just Because">Just Because</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group" style="max-width: 50%;">
-                <label>When do you need the gift? <span>*</span></label>
-                <input type="date" id="needed-date" required>
-            </div>
-        </section>
 
-        <section>
-            <div class="section-title"><span class="section-num">03</span> Tell Me About Them</div>
-            <div class="form-group">
-                <label>If you could describe them in 3 words, what would they be?</label>
-                <div class="grid-3">
-                    <input type="text" id="w1" placeholder="Word 1">
-                    <input type="text" id="w2" placeholder="Word 2">
-                    <input type="text" id="w3" placeholder="Word 3">
-                </div>
-            </div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>What are their favorite hobbies or interests?</label>
-                    <textarea id="hobbies" placeholder="Enter your answer"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>What do they enjoy doing in their free time?</label>
-                    <textarea id="free-time" placeholder="Enter your answer"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Favorite colors?</label>
-                    <input type="text" id="fav-colors" placeholder="Enter colors">
-                </div>
-                <div class="form-group">
-                    <label>Favorite sports, teams, shows, movies, music, books, or activities?</label>
-                    <input type="text" id="fav-media" placeholder="Enter your answer">
-                </div>
-            </div>
-        </section>
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="user" style="color: var(--primary-color); width: 18px; height: 18px;"></i> About You
+                    </div>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Your Name <span>*</span></label>
+                            <input type="text" id="cust-name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address <span>*</span></label>
+                            <input type="email" id="cust-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number <span>*</span></label>
+                            <input type="text" id="cust-phone" placeholder="Enter your phone number" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Contact Method <span>*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="contact" id="txt" value="Text" checked><label for="txt">Text</label></div>
+                            <div class="radio-item"><input type="radio" name="contact" id="eml" value="Email"><label for="eml">Email</label></div>
+                            <div class="radio-item"><input type="radio" name="contact" id="cl" value="Phone Call"><label for="cl">Phone Call</label></div>
+                        </div>
+                    </div>
+                </section>
 
-        <section>
-            <div class="section-title"><span class="section-num">04</span> The Meaningful Stuff</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>What is something about them that makes you smile?</label>
-                    <textarea id="makes-smile" placeholder="Enter your answer"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>What's a favorite memory you have with them?</label>
-                    <textarea id="fav-memory" placeholder="Enter your answer"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>What is something they've done that you'll never forget?</label>
-                    <textarea id="never-forget" placeholder="Enter your answer"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>What is one thing you wish they knew about how much they mean to you?</label>
-                    <textarea id="wish-they-knew" placeholder="Enter your answer"></textarea>
-                </div>
-            </div>
-        </section>
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="heart" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Tell Me About Your Person
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Who is this gift for? <span>*</span></label>
+                            <input type="text" id="gift-for" placeholder="Who is this gift for?" required>
+                        </div>
+                        <div class="form-group">
+                            <label>What is their relationship to you? <span>*</span></label>
+                            <select id="relationship" required>
+                                <option value="">Select relationship</option>
+                                <option value="Spouse / Partner">Spouse / Partner</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Friend">Friend</option>
+                                <option value="Child">Child</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Which age range best describes them? <span>*</span></label>
+                            <select id="age-range" required>
+                                <option value="">Select age range</option>
+                                <option value="Under 18">Under 18</option>
+                                <option value="19 - 30">19 - 30</option>
+                                <option value="31 - 50">31 - 50</option>
+                                <option value="51+">51+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>What occasion are we celebrating? <span>*</span></label>
+                            <select id="occasion" required>
+                                <option value="">Select occasion</option>
+                                <option value="Birthday">Birthday</option>
+                                <option value="Anniversary">Anniversary</option>
+                                <option value="Holiday">Holiday</option>
+                                <option value="Just Because">Just Because</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="max-width: 50%;">
+                        <label>When do you need the gift? <span>*</span></label>
+                        <input type="date" id="needed-date" required>
+                    </div>
+                </section>
 
-        <section>
-            <div class="section-title"><span class="section-num">05</span> Personal Details</div>
-            <div class="grid-2">
-                <div class="form-group"><label>Do they have a nickname?</label><input type="text" id="nickname" placeholder="Enter answer"></div>
-                <div class="form-group"><label>Do they have a favorite saying or quote?</label><input type="text" id="fav-quote" placeholder="Enter answer"></div>
-                <div class="form-group"><label>Is there an inside joke you'd like included?</label><input type="text" id="inside-joke" placeholder="Enter answer"></div>
-                <div class="form-group"><label>Are there any important dates you'd like included?</label><input type="text" id="important-dates" placeholder="Enter answer"></div>
-                <div class="form-group"><label>Any names you'd like included?</label><input type="text" id="included-names" placeholder="Enter answer"></div>
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="sparkles" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> The Person Behind the Gift
+                    </div>
+                    <div class="form-group">
+                        <label>If you could describe them in 3 words, what would they be?</label>
+                        <div class="grid-3">
+                            <input type="text" id="w1" placeholder="Word 1">
+                            <input type="text" id="w2" placeholder="Word 2">
+                            <input type="text" id="w3" placeholder="Word 3">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>What are their favorite hobbies or interests?</label>
+                            <textarea id="hobbies" placeholder="Enter your answer"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>What do they enjoy doing in their free time?</label>
+                            <textarea id="free-time" placeholder="Enter your answer"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Favorite colors?</label>
+                            <input type="text" id="fav-colors" placeholder="Enter colors">
+                        </div>
+                        <div class="form-group">
+                            <label>Favorite sports, teams, shows, movies, music, books, or activities?</label>
+                            <input type="text" id="fav-media" placeholder="Enter your answer">
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="message-circle-heart" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> The Meaningful Stuff
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>What is something about them that makes you smile?</label>
+                            <textarea id="makes-smile" placeholder="Enter your answer"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>What's a favorite memory you have with them?</label>
+                            <textarea id="fav-memory" placeholder="Enter your answer"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>What is something they've done that you'll never forget?</label>
+                            <textarea id="never-forget" placeholder="Enter your answer"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>What is one thing you wish they knew about how much they mean to you?</label>
+                            <textarea id="wish-they-knew" placeholder="Enter your answer"></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="bookmark" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Personal Details
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Do they have a nickname?</label><input type="text" id="nickname" placeholder="Enter answer"></div>
+                        <div class="form-group"><label>Do they have a favorite saying or quote?</label><input type="text" id="fav-quote" placeholder="Enter answer"></div>
+                        <div class="form-group"><label>Is there an inside joke you'd like included?</label><input type="text" id="inside-joke" placeholder="Enter answer"></div>
+                        <div class="form-group"><label>Are there any important dates you'd like included?</label><input type="text" id="important-dates" placeholder="Enter answer"></div>
+                        <div class="form-group"><label>Any names you'd like included?</label><input type="text" id="included-names" placeholder="Enter answer"></div>
+                        <div class="form-group">
+                            <label>Upload Reference Photos:</label>
+                            <input type="file" id="photo-upload" multiple accept="image/*">
+                            <div id="upload-status" style="font-size: 0.85rem; margin-top: 6px; color: var(--primary-color); font-weight: bold;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="palette" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Gift Style
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Which style feels most like them?</label>
+                            <div class="checkbox-grid" id="style-group">
+                                <div class="checkbox-item"><input type="checkbox" id="s1" value="Elegant"><label for="s1">Elegant</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="s2" value="Funny"><label for="s2">Funny</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="s3" value="Sentimental"><label for="s3">Sentimental</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="s4" value="Inspirational"><label for="s4">Inspirational</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="s5" value="Rustic"><label for="s5">Rustic</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="s6" value="Minimalist"><label for="s6">Minimalist</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Which emotion would you like this gift to create?</label>
+                            <div class="checkbox-grid" id="emotion-group">
+                                <div class="checkbox-item"><input type="checkbox" id="e1" value="Tears of Joy"><label for="e1">Tears of Joy</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="e2" value="Laughter"><label for="e2">Laughter</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="e3" value="Appreciation"><label for="e3">Appreciation</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="e4" value="Nostalgia"><label for="e4">Nostalgia</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="e5" value="Surprise"><label for="e5">Surprise</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="package" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Product Preferences
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Are there any products you'd like me to consider?</label>
+                            <div class="checkbox-grid" id="product-group">
+                                <div class="checkbox-item"><input type="checkbox" id="p1" value="Tumbler"><label for="p1">Tumbler</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="p2" value="Mug"><label for="p2">Mug</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="p3" value="Shirt"><label for="p3">Shirt</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="p4" value="Keychain"><label for="p4">Keychain</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Would you like a QR code that links to media?</label>
+                            <div class="radio-group">
+                                <div class="radio-item"><input type="radio" name="qr" id="q1" value="Yes"><label for="q1">Yes</label></div>
+                                <div class="radio-item"><input type="radio" name="qr" id="q2" value="No" checked><label for="q2">No</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="banknote" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Budget
+                    </div>
+                    <div class="form-group">
+                        <label>What's your gift budget?</label>
+                        <div class="radio-group">
+                            <div class="radio-item"><input type="radio" name="budget" id="b1" value="Under $50"><label for="b1">Under $50</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b2" value="$50 - $100" checked><label for="b2">$50 - $100</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b3" value="$100 - $150"><label for="b3">$100 - $150</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b4" value="$150+"><label for="b4">$150+</label></div>
+                        </div>
+                    </div>
+                </section>
+
+                <button type="submit" class="submit-btn">Submit Gift Plan</button>
+                <div id="form-message" style="margin-top: 15px; font-weight: bold; font-size: 0.95rem; display: none;"></div>
+            </form>
+
+            <div class="sidebar">
+                <div class="side-card">
+                    <h3>Your Gift Planning Session Includes:</h3>
+                    <ul style="padding: 0; margin: 0; list-style: none;">
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem;">
+                            <i data-lucide="users" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Personalized gift consultation
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem;">
+                            <i data-lucide="package-open" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Product recommendation
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem;">
+                            <i data-lucide="brush" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Custom design concept
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 0; font-size: 0.9rem;">
+                            <i data-lucide="pen-tool" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Meaningful wording suggestions
+                        </li>
+                    </ul>
+                </div>
                 
-                <div class="form-group">
-                    <label>Upload Reference Photos:</label>
-                    <input type="file" id="photo-upload" multiple accept="image/*">
-                    <div id="upload-status" style="font-size: 0.85rem; margin-top: 6px; color: var(--primary-color); font-weight: bold;"></div>
+                <div class="side-card fee-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 25px 20px;">
+                    <i data-lucide="ticket-percent" style="color: var(--primary-color); width: 24px; height: 24px; stroke-width: 1.5; margin-bottom: 2px;"></i>
+                    <p style="font-size: 1.1rem; font-weight: 600; margin: 0; color: var(--text-color);">*Gift Planning Fee: $20</p>
+                    <p style="font-size: 0.75rem; font-weight: normal; opacity: 0.8; margin: 0; line-height: 1.3; max-width: 90%;">*Non-refundable and applied toward your final purchase if you place an order.</p>
+                </div>
+                
+                <div class="side-card quote-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 30px 20px;">
+                    <i data-lucide="heart-handshake" style="color: var(--primary-color); width: 26px; height: 26px; stroke-width: 1.5;"></i>
+                    <p style="font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 700; line-height: 1.1; color: var(--text-color); margin: 0;">My goal isn't just to create a gift.</p>
+                    <p style="font-family: 'Brush Script MT', 'Brush Script Std', 'Bickham Script Pro', cursive; font-size: 1.5rem; line-height: 0.95; color: var(--primary-color); margin: 0; padding-top: 4px;">My goal is to create a moment they'll never forget.</p>
                 </div>
             </div>
-        </section>
-
-        <section>
-            <div class="section-title"><span class="section-num">06</span> Gift Style</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Which style feels most like them?</label>
-                    <div class="checkbox-grid" id="style-group">
-                        <div class="checkbox-item"><input type="checkbox" id="s1" value="Elegant"><label for="s1">Elegant</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="s2" value="Funny"><label for="s2">Funny</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="s3" value="Sentimental"><label for="s3">Sentimental</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="s4" value="Inspirational"><label for="s4">Inspirational</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="s5" value="Rustic"><label for="s5">Rustic</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="s6" value="Minimalist"><label for="s6">Minimalist</label></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Which emotion would you like this gift to create?</label>
-                    <div class="checkbox-grid" id="emotion-group">
-                        <div class="checkbox-item"><input type="checkbox" id="e1" value="Tears of Joy"><label for="e1">Tears of Joy</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="e2" value="Laughter"><label for="e2">Laughter</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="e3" value="Appreciation"><label for="e3">Appreciation</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="e4" value="Nostalgia"><label for="e4">Nostalgia</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="e5" value="Surprise"><label for="e5">Surprise</label></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <div class="section-title"><span class="section-num">07</span> Product Preferences</div>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Are there any products you'd like me to consider?</label>
-                    <div class="checkbox-grid" id="product-group">
-                        <div class="checkbox-item"><input type="checkbox" id="p1" value="Tumbler"><label for="p1">Tumbler</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="p2" value="Mug"><label for="p2">Mug</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="p3" value="Shirt"><label for="p3">Shirt</label></div>
-                        <div class="checkbox-item"><input type="checkbox" id="p4" value="Keychain"><label for="p4">Keychain</label></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Would you like a QR code that links to media?</label>
-                    <div class="radio-group">
-                        <div class="radio-item"><input type="radio" name="qr" id="q1" value="Yes"><label for="q1">Yes</label></div>
-                        <div class="radio-item"><input type="radio" name="qr" id="q2" value="No" checked><label for="q2">No</label></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <div class="section-title"><span class="section-num">08</span> Budget</div>
-            <div class="form-group">
-                <label>What's your gift budget?</label>
-                <div class="radio-group">
-                    <div class="radio-item"><input type="radio" name="budget" id="b1" value="Under $50"><label for="b1">Under $50</label></div>
-                    <div class="radio-item"><input type="radio" name="budget" id="b2" value="$50 - $100" checked><label for="b2">$50 - $100</label></div>
-                    <div class="radio-item"><input type="radio" name="budget" id="b3" value="$100 - $150"><label for="b3">$100 - $150</label></div>
-                    <div class="radio-item"><input type="radio" name="budget" id="b4" value="$150+"><label for="b4">$150+</label></div>
-                </div>
-            </div>
-        </section>
-
-        <button type="submit" class="submit-btn">Submit Gift Plan</button>
-        <div id="form-message" style="margin-top: 15px; font-weight: bold; font-size: 0.95rem; display: none;"></div>
-    </form>
-
-    <div class="sidebar">
-        <div class="side-card">
-            <h3>Your Gift Planning Session Includes:</h3>
-            <ul>
-                <li>✨ Personalized gift consultation</li>
-                <li>🎁 Product recommendation</li>
-                <li>🎨 Custom design concept</li>
-                <li>📝 Meaningful wording suggestions</li>
-            </ul>
-        </div>
-        <div class="side-card fee-card">
-            <p>Gift Planning Fee</p>
-            <div class="fee-price">$15</div>
-            <p style="font-size: 0.75rem; font-weight: normal; opacity: 0.8;">Applied toward your final purchase if you place an order.</p>
-        </div>
-        <div class="side-card quote-card">
-            <p>"My goal isn't just to create a gift. My goal is to create a moment they'll never forget."</p>
         </div>
     </div>
+
+    <div id="view-bulk" style="display: none; width: 100%;">
+        <div class="container">
+            <form class="main-form" id="bulkGiftForm">
+                <div class="form-header">
+                    <h1>Bulk & Corporate Gift Planning</h1>
+                    <p>Streamline your team appreciation, event handouts, or large group distributions seamlessly.</p>
+                </div>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="building-2" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Company & Contact Details
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Company / Organization Name</label><input type="text" id="bulk-company" placeholder="Enter company name"></div>
+                        <div class="form-group"><label>Contact Person Name <span>*</span></label><input type="text" id="bulk-contact" required placeholder="Your full name"></div>
+                        <div class="form-group"><label>Email Address <span>*</span></label><input type="email" id="bulk-email" required placeholder="name@company.com"></div>
+                        <div class="form-group"><label>Phone Number <span>*</span></label><input type="text" id="bulk-phone" required placeholder="Your phone number"></div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="truck" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Logistics & Volumetrics
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Estimated Total Quantity <span>*</span></label>
+                            <select id="bulk-quantity" required>
+                                <option value="">Select quantity tier</option>
+                                <option value="10-25">10 - 25 gifts</option>
+                                <option value="26-50">26 - 50 gifts</option>
+                                <option value="51-100">51 - 100 gifts</option>
+                                <option value="101+">101+ gifts (Large Distribution)</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Target Delivery Date <span>*</span></label><input type="date" id="bulk-deadline" required></div>
+                        <div class="form-group">
+                            <label>Shipping / Distribution Style</label>
+                            <select id="bulk-shipping">
+                                <option value="single-location">Bulk single shipment to one physical location</option>
+                                <option value="individual-addresses">Individual drop-shipments directly to separate homes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Per-Gift Budget Bracket</label>
+                            <select id="bulk-budget">
+                                <option value="Under $30">Under $30 per gift</option>
+                                <option value="$30 - $60">$30 - $60 per gift</option>
+                                <option value="$60 - $100">$60 - $100 per gift</option>
+                                <option value="$100+">$100+ premium executive gifts</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="palette" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Brand Assets & Identity
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Upload Corporate Logo (Vector, PNG, or JPEG):</label>
+                            <input type="file" id="bulk-logo-upload" accept="image/*">
+                            <div id="bulk-upload-status" style="font-size: 0.85rem; margin-top: 6px; color: var(--primary-color); font-weight: bold;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Brand Colors / Hex Codes:</label>
+                            <input type="text" id="bulk-brand-colors" placeholder="e.g., #003366, Navy Blue, Gold">
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="fingerprint" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Personalization Tier <span>*</span>
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-bottom: 12px;">What level of customization is required across the order?</label>
+                        <div class="radio-group" style="flex-direction: column; gap: 14px;">
+                            <div class="radio-item" style="align-items: flex-start;">
+                                <input type="radio" name="bulk-personalization" id="p-tier1" value="Identical Branding" checked style="margin-top: 3px;">
+                                <label for="p-tier1" style="font-weight: normal; cursor: pointer;">
+                                    <strong>Tier 1: Identical Bulk Branding (Base Price)</strong><br>
+                                    <span style="opacity: 0.8; font-size: 0.85rem;">Every item gets the exact same logo/design template. Best for event handouts or brand awareness.</span>
+                                </label>
+                            </div>
+                            <div class="radio-item" style="align-items: flex-start;">
+                                <input type="radio" name="bulk-personalization" id="p-tier2" value="Name Personalization" style="margin-top: 3px;">
+                                <label for="p-tier2" style="font-weight: normal; cursor: pointer;">
+                                    <strong>Tier 2: Team Personalization (+$5 - $10 per item)</strong><br>
+                                    <span style="opacity: 0.8; font-size: 0.85rem;">Same core company design, but each item is individually personalized with an employee/client name or initials.</span>
+                                </label>
+                            </div>
+                            <div class="radio-item" style="align-items: flex-start;">
+                                <input type="radio" name="bulk-personalization" id="p-tier3" value="Unique Customization" style="margin-top: 3px;">
+                                <label for="p-tier3" style="font-weight: normal; cursor: pointer;">
+                                    <strong>Tier 3: Bespoke Personalization (+$15 - $25+ per item)</strong><br>
+                                    <span style="opacity: 0.8; font-size: 0.85rem;">Each item features a unique design asset, specific personal quote, or complex individual details tailored to the specific recipient.</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-title">
+                        <i data-lucide="briefcase" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Branding Context
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>What is the occasion or purpose for these gifts?</label>
+                        <textarea id="bulk-occasion" placeholder="e.g., Annual holiday gift, project milestone completion, client onboarding..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Custom Branding & Logo Requirements Notes</label>
+                        <textarea id="bulk-branding" placeholder="Would you like specific brand color assets matched, or custom printed insert cards?"></textarea>
+                    </div>
+                </section>
+
+                <button type="submit" class="submit-btn" id="bulkSubmitBtn">Submit Bulk Request</button>
+                <div id="bulk-form-message" style="margin-top: 15px; font-weight: bold; font-size: 0.95rem; display: none;"></div>
+            </form>
+
+            <div class="sidebar">
+                <div class="side-card">
+                    <h3>Corporate Logistics Include:</h3>
+                    <ul style="padding: 0; margin: 0; list-style: none;">
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem;">
+                            <i data-lucide="shield-check" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Commercial procurement review
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem;">
+                            <i data-lucide="file-digit" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Volume pricing tiering
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.9rem;">
+                            <i data-lucide="layers" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Branding asset compatibility
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; margin-bottom: 0; font-size: 0.9rem;">
+                            <i data-lucide="map-pin" style="color: var(--primary-color); width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0;"></i> Multi-destination strategy
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="side-card fee-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 25px 20px;">
+                    <i data-lucide="lock" style="color: var(--primary-color); width: 24px; height: 24px; stroke-width: 1.5; margin-bottom: 2px;"></i>
+                    <p style="font-size: 1.1rem; font-weight: 600; margin: 0; color: var(--text-color);">*Design Deposit: $50</p>
+                    <p style="font-size: 0.75rem; font-weight: normal; opacity: 0.8; margin: 0; line-height: 1.3; max-width: 90%;">
+                        *Required to initiate customized brand layouts, vector rendering, and inventory holds. Applied directly to total contract value upon production sign-off.
+                    </p>
+                </div>
+                
+                <div class="side-card quote-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 30px 20px;">
+                    <i data-lucide="sparkles" style="color: var(--primary-color); width: 26px; height: 26px; stroke-width: 1.5;"></i>
+                    <p style="font-family: 'Merriweather', serif; font-size: 1.0rem; font-weight: 700; line-height: 1.2; color: var(--text-color); margin: 0;">Flawless Execution.</p>
+                    <p style="font-size: 0.8rem; font-weight: normal; opacity: 0.9; margin: 0; line-height: 1.3;">We blend your corporate brand standards with intentional craftsmanship to create lasting executive impact.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <script>
-    // 1. PLACE YOUR NEW ISOLATED FIREBASE CONFIG HERE:
-   const firebaseConfig = {
-      apiKey: "AIzaSyAFh17kO3JE1CyuH9XrqWu19RvadSEFP20",
-      authDomain: "gift-planning-form.firebaseapp.com",
-      projectId: "gift-planning-form",
-      storageBucket: "gift-planning-form.firebasestorage.app",
-      messagingSenderId: "777169863477",
-      appId: "1:777169863477:web:2fd112b16b0982dc7c427c",
-      measurementId: "G-6XL7M7Z692"
+    // 1. Firebase Initialization
+    const firebaseConfig = {
+        apiKey: "AIzaSyAFh17kO3JE1CyuH9XrqWu19RvadSEFP20",
+        authDomain: "gift-planning-form.firebaseapp.com",
+        projectId: "gift-planning-form",
+        storageBucket: "gift-planning-form.firebasestorage.app",
+        messagingSenderId: "777169863477",
+        appId: "1:777169863477:web:2fd112b16b0982dc7c427c",
+        measurementId: "G-6XL7M7Z692"
     };
 
-    // Initialize Firebase Database connection
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 2. PLACE YOUR CLOUDINARY CONFIGS HERE:
+    // 2. Cloudinary Variables
     const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpsmcu07f/image/upload";
     const CLOUDINARY_PRESET = "gift_planning";
-
     let uploadedImageUrls = [];
 
-    // Cloudinary upload mechanism
+    // View Switcher Engine
+    function switchFormView(targetView) {
+        const viewInd = document.getElementById('view-individual');
+        const viewBulk = document.getElementById('view-bulk');
+        const tabInd = document.getElementById('tab-individual');
+        const tabBulk = document.getElementById('tab-bulk');
+
+        if (targetView === 'individual') {
+            viewInd.style.display = "block";
+            viewBulk.style.display = "none";
+            tabInd.classList.add('active');
+            tabBulk.classList.remove('active');
+        } else {
+            viewInd.style.display = "none";
+            viewBulk.style.display = "block";
+            tabBulk.classList.add('active');
+            tabInd.classList.remove('active');
+        }
+        lucide.createIcons();
+    }
+
+    // Cloudinary Reference Upload Handler
     document.getElementById('photo-upload').addEventListener('change', async (e) => {
         const files = e.target.files;
         const statusDiv = document.getElementById('upload-status');
@@ -517,15 +758,13 @@
         statusDiv.innerText = `✨ ${uploadedImageUrls.length} photo(s) uploaded successfully!`;
     });
 
-    // Capture everything and send to Firebase Firestore
+    // Form submission processing logic for Single Custom Gifts
     document.getElementById('giftForm').addEventListener('submit', function(e) {
         e.preventDefault();
-
         const submitBtn = e.target.querySelector('.submit-btn');
         submitBtn.innerText = "Saving Submission...";
         submitBtn.disabled = true;
 
-        // Helper tracking checked options
         const getCheckedValues = (containerId) => {
             const boxes = document.querySelectorAll(`${containerId} input[type="checkbox"]:checked`);
             let values = [];
@@ -538,24 +777,17 @@
             return checked ? checked.value : '';
         };
 
-        // Complete Map structure matching your database destination
         const submissionPayload = {
             timestamp: new Date().toISOString(),
-            
-            // Section 1
             customerName: document.getElementById('cust-name').value,
             customerEmail: document.getElementById('cust-email').value,
             customerPhone: document.getElementById('cust-phone').value,
             preferredContact: getRadioValue('contact'),
-
-            // Section 2
             recipientName: document.getElementById('gift-for').value,
             recipientRelationship: document.getElementById('relationship').value,
             recipientAgeRange: document.getElementById('age-range').value,
             celebratedOccasion: document.getElementById('occasion').value,
             deliveryDateNeeded: document.getElementById('needed-date').value,
-
-            // Section 3
             descriptiveThreeWords: [
                 document.getElementById('w1').value,
                 document.getElementById('w2').value,
@@ -565,24 +797,16 @@
             freeTimeEnjoyment: document.getElementById('free-time').value,
             favoriteColors: document.getElementById('fav-colors').value,
             favoriteMediaAndActivities: document.getElementById('fav-media').value,
-
-            // Section 4
             whatMakesYouSmile: document.getElementById('makes-smile').value,
             favoriteMemory: document.getElementById('fav-memory').value,
             unforgettableMoment: document.getElementById('never-forget').value,
             heartfeltWishMessage: document.getElementById('wish-they-knew').value,
-
-            // Section 5
             recipientNickname: document.getElementById('nickname').value,
             favoriteQuoteSaying: document.getElementById('fav-quote').value,
             insideJokeContext: document.getElementById('inside-joke').value,
             notableImportantDates: document.getElementById('important-dates').value,
             specificNamesToInclude: document.getElementById('included-names').value,
-            
-            // Image URLs Array
             cloudinaryPhotoLinks: uploadedImageUrls,
-
-            // Sections 6, 7 & 8
             chosenGiftStyles: getCheckedValues('#style-group'),
             intendedEmotions: getCheckedValues('#emotion-group'),
             productPreferences: getCheckedValues('#product-group'),
@@ -590,38 +814,109 @@
             allottedBudget: getRadioValue('budget')
         };
 
-      // Write directly to your isolated collection
         db.collection("gift_submissions").add(submissionPayload)
             .then(() => {
-                // 1. Get the message container element
                 const msgDiv = document.getElementById('form-message');
-                
-                // 2. Style it with a beautiful success color and reveal it
-                msgDiv.style.color = "#4a7c59"; // A soft green matching your palette
+                msgDiv.style.color = "#4a7c59"; 
                 msgDiv.innerText = "✨ Success! Your beautiful gift plan has been submitted successfully.";
                 msgDiv.style.display = "block";
-                
-                // 3. Reset the form fields safely
                 e.target.reset();
                 document.getElementById('upload-status').innerText = "";
                 uploadedImageUrls = [];
                 submitBtn.innerText = "Submit Gift Plan";
                 submitBtn.disabled = false;
-                
-                // Optional: Hide the success message automatically after 7 seconds
                 setTimeout(() => { msgDiv.style.display = "none"; }, 7000);
             })
             .catch((error) => {
                 const msgDiv = document.getElementById('form-message');
-                msgDiv.style.color = "#c94a4a"; // A clear error red
+                msgDiv.style.color = "#c94a4a"; 
                 msgDiv.innerText = "⚠️ Something went wrong saving to the database. Please try again.";
                 msgDiv.style.display = "block";
-                
-                console.error("Firebase Storage write error: ", error);
+                console.error("Firebase database write error: ", error);
                 submitBtn.innerText = "Submit Gift Plan";
                 submitBtn.disabled = false;
             });
     });
+
+    // Form submission processing logic for Bulk Corporate requests
+    document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const submitBtn = document.getElementById('bulkSubmitBtn');
+        const msgDiv = document.getElementById('bulk-form-message');
+        
+        submitBtn.innerText = "Processing Corporate Request...";
+        submitBtn.disabled = true;
+
+        const getRadioValue = (name) => {
+            const checked = document.querySelector(`input[name="${name}"]:checked`);
+            return checked ? checked.value : '';
+        };
+
+        const bulkPayload = {
+            timestamp: new Date().toISOString(),
+            companyName: document.getElementById('bulk-company').value,
+            contactName: document.getElementById('bulk-contact').value,
+            email: document.getElementById('bulk-email').value,
+            phone: document.getElementById('bulk-phone').value,
+            quantityBracket: document.getElementById('bulk-quantity').value,
+            deadline: document.getElementById('bulk-deadline').value,
+            shippingStyle: document.getElementById('bulk-shipping').value,
+            budgetTier: document.getElementById('bulk-budget').value,
+            occasionContext: document.getElementById('bulk-occasion').value,
+            brandingDetails: document.getElementById('bulk-branding').value,
+            corporateLogoUrl: uploadedCorporateLogoUrl,
+            brandColors: document.getElementById('bulk-brand-colors').value,
+            personalizationTier: getRadioValue('bulk-personalization'),
+            status: "New Corporate Lead"
+        };
+        let uploadedCorporateLogoUrl = "";
+
+     document.getElementById('bulk-logo-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            const statusDiv = document.getElementById('bulk-upload-status');
+            uploadedCorporateLogoUrl = "";
+
+            if (!file) return;
+            statusDiv.innerText = "Uploading corporate logo assets...";
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_PRESET);
+
+            try {
+                let response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+                let data = await response.json();
+                if (data.secure_url) {
+                    uploadedCorporateLogoUrl = data.secure_url;
+                    statusDiv.innerText = "✨ Logo uploaded successfully!";
+                }
+            } catch (err) {
+                console.error("Corporate Logo Upload Error:", err);
+                statusDiv.innerText = "Error uploading logo file.";
+            }
+        });
+
+        db.collection("bulk_submissions").add(bulkPayload)
+            .then(() => {
+                msgDiv.style.color = "#4a7c59";
+                msgDiv.innerText = "💼 Success! Your bulk corporate request has been saved. We will review your branding requirements and reach out soon.";
+                msgDiv.style.display = "block";
+                e.target.reset();
+                submitBtn.innerText = "Submit Bulk Request";
+                submitBtn.disabled = false;
+                setTimeout(() => { msgDiv.style.display = "none"; }, 7000);
+            })
+            .catch((error) => {
+                msgDiv.style.color = "#c94a4a";
+                msgDiv.innerText = "⚠️ Something went wrong writing to the system. Please try again.";
+                msgDiv.style.display = "block";
+                console.error("Firestore Corporate Write Error: ", error);
+                submitBtn.innerText = "Submit Bulk Request";
+                submitBtn.disabled = false;
+            });
+    });
+
+    lucide.createIcons();
 </script>
 </body>
 </html>
