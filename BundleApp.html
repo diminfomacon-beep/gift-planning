@@ -165,6 +165,19 @@
                     <button type="button" class="action-btn secondary" id="cancelEditBtn" style="display:none;" onclick="resetProductForm()">Cancel Modification</button>
                 </form>
 
+               <div class="catalog-toolbar" style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="text" id="catalogSearchInput" placeholder="Search products by name..." oninput="filterCatalogDisplay()" style="padding-left: 35px; background: #ffffff;">
+                        <i data-lucide="search" style="position: absolute; left: 10px; width: 16px; height: 16px; opacity: 0.5;"></i>
+                    </div>
+                    <div class="filter-chip-group" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="filter-chip active" id="chip-all" onclick="setCatalogTierFilter('all')" style="flex: 1; padding: 6px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); border-radius: 4px; background: var(--primary-light); color: var(--text); cursor: pointer;">All</button>
+                        <button type="button" class="filter-chip" id="chip-basic" onclick="setCatalogTierFilter('basic')" style="flex: 1; padding: 6px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); border-radius: 4px; background: #ffffff; color: #4a5568; cursor: pointer;">Basic</button>
+                        <button type="button" class="filter-chip" id="chip-mid" onclick="setCatalogTierFilter('mid')" style="flex: 1; padding: 6px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); border-radius: 4px; background: #ffffff; color: #c05621; cursor: pointer;">Mid</button>
+                        <button type="button" class="filter-chip" id="chip-luxury" onclick="setCatalogTierFilter('luxury')" style="flex: 1; padding: 6px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); border-radius: 4px; background: #ffffff; color: #553c9a; cursor: pointer;">Luxury</button>
+                    </div>
+                </div>
+
                 <div class="product-catalog" id="catalogDisplay">
                     </div>
             </div>
@@ -322,11 +335,26 @@
                 });
         }
 
+        // Global state tracking variables for active searching/filtering
+        let currentActiveTierFilter = "all";
+
         function renderCatalogInterface() {
             const container = document.getElementById('catalogDisplay');
             container.innerHTML = '';
 
+            const searchQuery = (document.getElementById('catalogSearchInput')?.value || '').toLowerCase().trim();
+
             completeProductCatalogCache.forEach(prod => {
+                // Check Rule A: Match Tier Selection Filter
+                if (currentActiveTierFilter !== "all" && prod.tier !== currentActiveTierFilter) {
+                    return; 
+                }
+
+                // Check Rule B: Match Text Search Input
+                if (searchQuery !== "" && !prod.name.toLowerCase().includes(searchQuery)) {
+                    return; 
+                }
+
                 const isChecked = runningActiveAssemblyMap[prod.id] !== undefined;
                 const node = document.createElement('div');
                 node.className = `catalog-item ${isChecked ? 'selected' : ''}`;
@@ -353,6 +381,33 @@
                 container.appendChild(node);
             });
             lucide.createIcons();
+        }
+
+        // Triggered instantly on text input keystrokes
+        function filterCatalogDisplay() {
+            renderCatalogInterface();
+        }
+
+        // Handles switching between All, Basic, Mid, and Luxury buttons
+        function setCatalogTierFilter(tier) {
+            currentActiveTierFilter = tier;
+            
+            // Reset button styles back to standard neutral unselected status
+            document.querySelectorAll('.filter-chip').forEach(btn => {
+                btn.style.background = "#ffffff";
+            });
+
+            // Highlight the active button cleanly to keep the UI intuitive
+            const activeChip = document.getElementById(`chip-${tier}`);
+            if (activeChip) {
+                if (tier === 'all') activeChip.style.background = "var(--primary-light)";
+                if (tier === 'basic') activeChip.style.background = "#e2e8f0";
+                if (tier === 'mid') activeChip.style.background = "#feebc8";
+                if (tier === 'luxury') activeChip.style.background = "#e9d8fd";
+            }
+
+            renderCatalogInterface();
+        }            lucide.createIcons();
         }
 
         function toggleItemSelection(id, isSelected) {
