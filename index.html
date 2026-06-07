@@ -439,6 +439,7 @@
         </section>
 
         <button type="submit" class="submit-btn">Submit Gift Plan</button>
+        <div id="form-message" style="margin-top: 15px; font-weight: bold; font-size: 0.95rem; display: none;"></div>
     </form>
 
     <div class="sidebar">
@@ -589,18 +590,33 @@
             allottedBudget: getRadioValue('budget')
         };
 
-        // Write directly to your isolated collection
+      // Write directly to your isolated collection
         db.collection("gift_submissions").add(submissionPayload)
             .then(() => {
-                alert('Success! Your beautiful gift plan has been sent.');
+                // 1. Get the message container element
+                const msgDiv = document.getElementById('form-message');
+                
+                // 2. Style it with a beautiful success color and reveal it
+                msgDiv.style.color = "#4a7c59"; // A soft green matching your palette
+                msgDiv.innerText = "✨ Success! Your beautiful gift plan has been submitted successfully.";
+                msgDiv.style.display = "block";
+                
+                // 3. Reset the form fields safely
                 e.target.reset();
                 document.getElementById('upload-status').innerText = "";
                 uploadedImageUrls = [];
                 submitBtn.innerText = "Submit Gift Plan";
                 submitBtn.disabled = false;
+                
+                // Optional: Hide the success message automatically after 7 seconds
+                setTimeout(() => { msgDiv.style.display = "none"; }, 7000);
             })
             .catch((error) => {
-                alert('Something went wrong saving to the database.');
+                const msgDiv = document.getElementById('form-message');
+                msgDiv.style.color = "#c94a4a"; // A clear error red
+                msgDiv.innerText = "⚠️ Something went wrong saving to the database. Please try again.";
+                msgDiv.style.display = "block";
+                
                 console.error("Firebase Storage write error: ", error);
                 submitBtn.innerText = "Submit Gift Plan";
                 submitBtn.disabled = false;
