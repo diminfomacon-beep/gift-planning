@@ -1,0 +1,18 @@
+{
+  "short_name": "BundleApp",
+  "name": "DimBright Pricing & Bundle Matrix",
+  "description": "Inventory management, item yield optimization, and dynamic tier bundle pricing matrix analyzer.",
+  "icons": [
+    {
+      "src": "bundleapp.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/gift-planning/BundleApp",
+  "background_color": "#fcf8f5",
+  "theme_color": "#7d5a50",
+  "display": "standalone",
+  "orientation": "portrait-primary"
+}
