@@ -248,6 +248,28 @@
             background-color: #a3938f;
             cursor: not-allowed;
         }
+        .split-separator {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .vertical-line {
+            width: 1px;
+            background-color: var(--border-color);
+            align-self: stretch;
+        }
+
+        /* Fallback for mobile screens so it stacks normally without the line */
+        @media (max-width: 600px) {
+            .split-separator {
+                grid-template-columns: 1fr;
+            }
+            .vertical-line {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -256,18 +278,16 @@
 
     <div class="form-toggle-navigation">
         <button type="button" id="tab-individual" class="nav-tab active" onclick="switchFormView('individual')">
-            <i data-lucide="user"></i> Single Custom Gift Plan
-        </button>
+            <i data-lucide="user"></i> Individual Custom Gift Plan</button>
         <button type="button" id="tab-bulk" class="nav-tab" onclick="switchFormView('bulk')">
-            <i data-lucide="building-2"></i> For Bulk Orders Click Here
-        </button>
+            <i data-lucide="building-2"></i> Bulk & Corporate Gift Plan</button>
     </div>
 
     <div id="view-individual" style="display: block; width: 100%;">
         <div class="container">
             <form class="main-form" id="giftForm">
                 <div class="form-header">
-                    <h1>Gift Planning Form</h1>
+                    <h1>Individual Gift Planning Form</h1>
                     <p>The more you share, the more personal and meaningful your gift will be. There are no right or wrong answers.</p>
                 </div>
 
@@ -314,18 +334,26 @@
                                 <option value="">Select relationship</option>
                                 <option value="Spouse / Partner">Spouse / Partner</option>
                                 <option value="Parent">Parent</option>
-                                <option value="Friend">Friend</option>
-                                <option value="Child">Child</option>
+                                <option value="Friend">Child</option>
+                                <option value="Child">Grandparent</option>
+                                <option value="Child">Friend</option>
+                                <option value="Child">Coworker</option>
+                                <option value="Child">Teacher</option>
+                                <option value="Child">Other:</option>
+
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Which age range best describes them? <span>*</span></label>
                             <select id="age-range" required>
                                 <option value="">Select age range</option>
-                                <option value="Under 18">Under 18</option>
-                                <option value="19 - 30">19 - 30</option>
-                                <option value="31 - 50">31 - 50</option>
-                                <option value="51+">51+</option>
+                                <option value="0 - 2">Baby(0-2)</option>
+                                <option value="3 - 5">Toddler(3 - 5)</option>
+                                <option value="6 - 12">Child(6 - 12)</option>
+                                <option value="13 - 17">Teen(13 - 17)</option>
+                                <option value="18 - 24">Young Adult(18 - 24)</option>
+                                <option value="25 - 64">Adult(25 - 64)</option>
+                                <option value="65+">Senior(65+)</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -334,7 +362,12 @@
                                 <option value="">Select occasion</option>
                                 <option value="Birthday">Birthday</option>
                                 <option value="Anniversary">Anniversary</option>
-                                <option value="Holiday">Holiday</option>
+                                <option value="Father's Day">Father's Day</option>
+                                <option value="Mother's Day">Mother's Day</option>
+                                <option value="Graduation">Graduation</option>
+                                <option value="Wedding">Wedding</option>
+                                <option value="Retirement">Retirement</option>
+                                <option value="Memorial">Memorial</option>
                                 <option value="Just Because">Just Because</option>
                             </select>
                         </div>
@@ -415,6 +448,7 @@
                             <label>Upload Reference Photos:</label>
                             <input type="file" id="photo-upload" multiple accept="image/*">
                             <div id="upload-status" style="font-size: 0.85rem; margin-top: 6px; color: var(--primary-color); font-weight: bold;"></div>
+                            <div style="font-size: 0.7rem;"><i><b>To upload more than one photo:</b> Please email <b>info@dimbrightideas.com</b> or text/WhatsApp <b>(478) 382-0150</b>. Be sure to include your name or phone number so we can link them to your form.</i></div>
                         </div>
                     </div>
                 </section>
@@ -423,7 +457,7 @@
                     <div class="section-title">
                         <i data-lucide="palette" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Gift Style
                     </div>
-                    <div class="grid-2">
+                    <div class="split-separator">
                         <div class="form-group">
                             <label>Which style feels most like them?</label>
                             <div class="checkbox-grid" id="style-group">
@@ -435,6 +469,9 @@
                                 <div class="checkbox-item"><input type="checkbox" id="s6" value="Minimalist"><label for="s6">Minimalist</label></div>
                             </div>
                         </div>
+
+                        <div class="vertical-line"></div>
+
                         <div class="form-group">
                             <label>Which emotion would you like this gift to create?</label>
                             <div class="checkbox-grid" id="emotion-group">
@@ -459,14 +496,17 @@
                                 <div class="checkbox-item"><input type="checkbox" id="p1" value="Tumbler"><label for="p1">Tumbler</label></div>
                                 <div class="checkbox-item"><input type="checkbox" id="p2" value="Mug"><label for="p2">Mug</label></div>
                                 <div class="checkbox-item"><input type="checkbox" id="p3" value="Shirt"><label for="p3">Shirt</label></div>
-                                <div class="checkbox-item"><input type="checkbox" id="p4" value="Keychain"><label for="p4">Keychain</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="p4" value="Photo Panel/Slate"><label for="p4">Photo Panel/Slate</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="p5" value="Keepsake Box"><label for="p5">Keepsake Box</label></div>
+                                <div class="checkbox-item"><input type="checkbox" id="p6" value="Surprise Me"><label for="p6">Surprise Me</label></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Would you like a QR code that links to media?</label>
+                            <label>Would you like a QR code that links to a video, voice message, slideshow, or special message?</label>
                             <div class="radio-group">
                                 <div class="radio-item"><input type="radio" name="qr" id="q1" value="Yes"><label for="q1">Yes</label></div>
                                 <div class="radio-item"><input type="radio" name="qr" id="q2" value="No" checked><label for="q2">No</label></div>
+                                <div class="radio-item"><input type="radio" name="qr" id="q3" value="Tell Me More"><label for="q3">Tell Me More</label></div>
                             </div>
                         </div>
                     </div>
@@ -479,10 +519,12 @@
                     <div class="form-group">
                         <label>What's your gift budget?</label>
                         <div class="radio-group">
-                            <div class="radio-item"><input type="radio" name="budget" id="b1" value="Under $50"><label for="b1">Under $50</label></div>
-                            <div class="radio-item"><input type="radio" name="budget" id="b2" value="$50 - $100" checked><label for="b2">$50 - $100</label></div>
-                            <div class="radio-item"><input type="radio" name="budget" id="b3" value="$100 - $150"><label for="b3">$100 - $150</label></div>
-                            <div class="radio-item"><input type="radio" name="budget" id="b4" value="$150+"><label for="b4">$150+</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b1" value="Under $30"><label for="b1">Under $30</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b2" value="$30 - $50" checked><label for="b2">$30 - $50</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b3" value="$50 - $75"><label for="b3">$50 - $75</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b4" value="$75 - $100"><label for="b4">$75 - $100</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b5" value="$100 - $150"><label for="b5">$100 - $150</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b6" value="$150+"><label for="b6">$150+</label></div>
                         </div>
                     </div>
                 </section>
@@ -529,7 +571,7 @@
         <div class="container">
             <form class="main-form" id="bulkGiftForm">
                 <div class="form-header">
-                    <h1>Bulk & Corporate Gift Planning</h1>
+                    <h1>Bulk & Corporate Gift Planning Form</h1>
                     <p>Streamline your team appreciation, event handouts, or large group distributions seamlessly.</p>
                 </div>
 
@@ -589,6 +631,7 @@
                             <label>Upload Corporate Logo (Vector, PNG, or JPEG):</label>
                             <input type="file" id="bulk-logo-upload" accept="image/*">
                             <div id="bulk-upload-status" style="font-size: 0.85rem; margin-top: 6px; color: var(--primary-color); font-weight: bold;"></div>
+                            <div style="font-size: 0.7rem;"><i><b>To upload more than one photo:</b> Please email <b>info@dimbrightideas.com</b> or text/WhatsApp <b>(478) 382-0150</b>. Be sure to include your name or phone number so we can link them to your form.</i></div>
                         </div>
                         <div class="form-group">
                             <label>Brand Colors / Hex Codes:</label>
@@ -608,14 +651,14 @@
                                 <input type="radio" name="bulk-personalization" id="p-tier1" value="Identical Branding" checked style="margin-top: 3px;">
                                 <label for="p-tier1" style="font-weight: normal; cursor: pointer;">
                                     <strong>Tier 1: Identical Bulk Branding (Base Price)</strong><br>
-                                    <span style="opacity: 0.8; font-size: 0.85rem;">Every item gets the exact same logo/design template. Best for event handouts or brand awareness.</span>
+                                    <span style="opacity: 0.8; font-size: 0.85rem;">Every item gets the same logo/design template. Best for event handouts or brand awareness.</span>
                                 </label>
                             </div>
                             <div class="radio-item" style="align-items: flex-start;">
                                 <input type="radio" name="bulk-personalization" id="p-tier2" value="Name Personalization" style="margin-top: 3px;">
                                 <label for="p-tier2" style="font-weight: normal; cursor: pointer;">
                                     <strong>Tier 2: Team Personalization (+$5 - $10 per item)</strong><br>
-                                    <span style="opacity: 0.8; font-size: 0.85rem;">Same core company design, but each item is individually personalized with an employee/client name or initials.</span>
+                                    <span style="opacity: 0.8; font-size: 0.85rem;">Same core company design, but each item is individually personalized with a name or initials.</span>
                                 </label>
                             </div>
                             <div class="radio-item" style="align-items: flex-start;">
@@ -708,6 +751,11 @@
     const CLOUDINARY_PRESET = "gift_planning";
     let uploadedImageUrls = [];
 
+    // 3. Pushover Configuration 
+    // Get these from your dashboard at https://pushover.net
+    const PUSHOVER_USER_KEY = "ueb3ouifx46g56n7by3rfh198nmagb";   // Your individual User Key
+    const PUSHOVER_APP_TOKEN = "az24xk23yyn69ej8v363ke5u92v834"; // The API Token for the application you created
+
     // View Switcher Engine
     function switchFormView(targetView) {
         const viewInd = document.getElementById('view-individual');
@@ -757,7 +805,28 @@
         }
         statusDiv.innerText = `✨ ${uploadedImageUrls.length} photo(s) uploaded successfully!`;
     });
+    function triggerPushoverAlert(title, messageContent) {
+        const url = "https://api.pushover.net/1/messages.json";
+        
+        // We use URLSearchParams to pass variables cleanly as application/x-www-form-urlencoded
+        const payload = new URLSearchParams();
+        payload.append("token", PUSHOVER_APP_TOKEN);
+        payload.append("user", PUSHOVER_USER_KEY);
+        payload.append("title", title);
+        payload.append("message", messageContent);
+        payload.append("sound", "cashregister"); // Optional: changes your phone's chime sound!
 
+        fetch(url, {
+            method: "POST",
+            body: payload,
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        })
+        .then(response => response.json())
+        .then(data => console.log("Pushover notification dispatched:", data))
+        .catch(err => console.error("Pushover notification failed:", err));
+    }
+
+    // Form submission processing logic for Single Custom Gifts
     // Form submission processing logic for Single Custom Gifts
     document.getElementById('giftForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -816,6 +885,46 @@
 
         db.collection("gift_submissions").add(submissionPayload)
             .then(() => {
+                // Pushover Alert
+                const name = document.getElementById('cust-name').value;
+                const budget = document.querySelector('input[name="budget"]:checked')?.value || "Unset";
+                triggerPushoverAlert(
+                    "🎁 New Single Gift Plan!",
+                    `From: ${name}\nBudget Range: ${budget}\nCheck Firestore dashboard for details.`
+                );
+
+                // UI Success Update with Timeline Note
+                const msgDiv = document.getElementById('form-message');
+                msgDiv.style.color = "#4a7c59"; 
+                msgDiv.innerHTML = "✨ **Success! Your gift plan has been submitted.**<br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Please check your inbox. You will receive your custom quote and an invoice request for the $20 planning fee within **48 business hours**. Your design layout will begin as soon as the deposit is completed!</span>";
+                msgDiv.style.display = "block";
+                
+                e.target.reset();
+                document.getElementById('upload-status').innerText = "";
+                uploadedImageUrls = [];
+                submitBtn.innerText = "Submit Gift Plan";
+                submitBtn.disabled = false;
+                
+                // Keep it visible longer so they can read the timeline details
+                setTimeout(() => { msgDiv.style.display = "none"; }, 15000);
+            })
+            .catch((error) => {
+                const msgDiv = document.getElementById('form-message');
+                msgDiv.style.color = "#c94a4a"; 
+                msgDiv.innerText = "⚠️ Something went wrong saving to the database. Please try again.";
+                msgDiv.style.display = "block";
+                console.error("Firebase database write error: ", error);
+                submitBtn.innerText = "Submit Gift Plan";
+                submitBtn.disabled = false;
+            });
+    });
+        db.collection("gift_submissions").add(submissionPayload)
+            .then(() => {
+                elector('input[name="budget"]:checked')?.value || "Unset";
+                triggerPushoverAlert(
+                    "🎁 New Single Gift Plan!",
+                    `From: ${name}\nBudget Range: ${budget}\nCheck Firestore dashboard for details.`
+                );
                 const msgDiv = document.getElementById('form-message');
                 msgDiv.style.color = "#4a7c59"; 
                 msgDiv.innerText = "✨ Success! Your beautiful gift plan has been submitted successfully.";
@@ -836,9 +945,9 @@
                 submitBtn.innerText = "Submit Gift Plan";
                 submitBtn.disabled = false;
             });
-    });
+    
 
-    // Form submission processing logic for Bulk Corporate requests
+   // Form submission processing logic for Bulk Corporate requests
     document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const submitBtn = document.getElementById('bulkSubmitBtn');
@@ -869,42 +978,29 @@
             personalizationTier: getRadioValue('bulk-personalization'),
             status: "New Corporate Lead"
         };
-        let uploadedCorporateLogoUrl = "";
-
-     document.getElementById('bulk-logo-upload').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            const statusDiv = document.getElementById('bulk-upload-status');
-            uploadedCorporateLogoUrl = "";
-
-            if (!file) return;
-            statusDiv.innerText = "Uploading corporate logo assets...";
-
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', CLOUDINARY_PRESET);
-
-            try {
-                let response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
-                let data = await response.json();
-                if (data.secure_url) {
-                    uploadedCorporateLogoUrl = data.secure_url;
-                    statusDiv.innerText = "✨ Logo uploaded successfully!";
-                }
-            } catch (err) {
-                console.error("Corporate Logo Upload Error:", err);
-                statusDiv.innerText = "Error uploading logo file.";
-            }
-        });
 
         db.collection("bulk_submissions").add(bulkPayload)
             .then(() => {
+                // Pushover Alert
+                const company = document.getElementById('bulk-company').value || "No Company Name";
+                const contact = document.getElementById('bulk-contact').value;
+                const pTier = document.querySelector('input[name="bulk-personalization"]:checked')?.value || "Tier 1";
+                triggerPushoverAlert(
+                    "💼 New Corporate Request!",
+                    `Company: ${company}\nContact: ${contact}\nPersonalization Tier: ${pTier}\nReview lead details immediately.`
+                );
+
+                // UI Success Update with Corporate Timeline Note
                 msgDiv.style.color = "#4a7c59";
-                msgDiv.innerText = "💼 Success! Your bulk corporate request has been saved. We will review your branding requirements and reach out soon.";
+                msgDiv.innerHTML = "💼 **Success! Your bulk corporate request has been saved.**<br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Our procurement review takes up to **48 business hours**. We will email you a proposal breakdown alongside an invoice request for your refundable $50 design deposit so we can lock down your inventory and start vector mockups.</span>";
                 msgDiv.style.display = "block";
+                
                 e.target.reset();
                 submitBtn.innerText = "Submit Bulk Request";
                 submitBtn.disabled = false;
-                setTimeout(() => { msgDiv.style.display = "none"; }, 7000);
+                
+                // Keep visible longer for corporate tracking context
+                setTimeout(() => { msgDiv.style.display = "none"; }, 15000);
             })
             .catch((error) => {
                 msgDiv.style.color = "#c94a4a";
