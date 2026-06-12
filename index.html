@@ -853,7 +853,26 @@ function triggerPushoverAlert(title, messageContent) {
     .then(data => console.log("Pushover notification dispatched:", data))
     .catch(err => console.error("Pushover notification failed:", err));
 }
+function showMessage(elementId, message, success = true) {
+    const box = document.getElementById(elementId);
 
+    box.style.display = "block";
+    box.style.padding = "12px";
+    box.style.borderRadius = "6px";
+    box.style.marginTop = "15px";
+
+    if (success) {
+        box.style.background = "#e8f5e9";
+        box.style.color = "#2e7d32";
+        box.style.border = "1px solid #81c784";
+    } else {
+        box.style.background = "#ffebee";
+        box.style.color = "#c62828";
+        box.style.border = "1px solid #ef9a9a";
+    }
+
+    box.innerHTML = message;
+}
 // Form submission processing logic for Bulk Corporate requests
 document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -913,9 +932,15 @@ document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
         })
         .catch((error) => {
             msgDiv.style.color = "#c94a4a";
-            msgDiv.innerText = "⚠️ Something went wrong writing to the system. Please try again.";
+            msgDiv.innerHTML = `
+                <strong>Submission Failed</strong><br>
+                ${error.code}<br>
+                ${error.message}
+            `;
             msgDiv.style.display = "block";
-            console.error("Firestore Corporate Write Error: ", error);
+        
+            console.error("FULL FIREBASE ERROR:", error);
+        
             submitBtn.innerText = "Submit Bulk Request";
             submitBtn.disabled = false;
         });
@@ -988,7 +1013,12 @@ document.getElementById('giftForm').addEventListener('submit', function(e) {
 
             const msgDiv = document.getElementById('form-message');
             msgDiv.style.color = "#4a7c59"; 
-            msgDiv.innerHTML = "✨ **Success! Your gift plan has been submitted.**<br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Please check your inbox. You will receive your custom quote and an invoice request for the $20 planning fee within **48 business hours**. Your design layout will begin as soon as the deposit is completed!</span>";
+            msgDiv.innerHTML = `
+            ✨ <strong>Success! Your gift plan has been submitted.</strong><br>
+            <span style="font-weight:normal;font-size:.85rem;">
+            Please check your inbox. You will receive your custom quote and invoice request within 48 business hours.
+            </span>
+            `;            
             msgDiv.style.display = "block";
             
             e.target.reset();
@@ -1001,10 +1031,17 @@ document.getElementById('giftForm').addEventListener('submit', function(e) {
         })
         .catch((error) => {
             const msgDiv = document.getElementById('form-message');
-            msgDiv.style.color = "#c94a4a"; 
-            msgDiv.innerText = "⚠️ Something went wrong saving to the database. Please try again.";
+        
+            msgDiv.style.color = "#c94a4a";
+            msgDiv.innerHTML = `
+                <strong>Submission Failed</strong><br>
+                ${error.code}<br>
+                ${error.message}
+            `;
             msgDiv.style.display = "block";
-            console.error("Firebase database write error: ", error);
+        
+            console.error("FULL FIREBASE ERROR:", error);
+        
             submitBtn.innerText = "Submit Gift Plan";
             submitBtn.disabled = false;
         });
