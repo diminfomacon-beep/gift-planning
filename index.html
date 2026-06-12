@@ -747,10 +747,12 @@
     const db = firebase.firestore();
 
     // 2. Cloudinary Variables
+   // 2. Cloudinary Variables
     const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpsmcu07f/image/upload";
     const CLOUDINARY_PRESET = "gift_planning";
     let uploadedImageUrls = [];
-
+    let uploadedCorporateLogoUrl = ""; // 👈 ADD THIS LINE TO PREVENT THE CRASH
+    
     // 3. Pushover Configuration 
     // Get these from your dashboard at https://pushover.net
     const PUSHOVER_USER_KEY = "ueb3ouifx46g56n7by3rfh198nmagb";   // Your individual User Key
