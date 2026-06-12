@@ -731,290 +731,285 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-<script>
-    // 1. Firebase Initialization
-    const firebaseConfig = {
-        apiKey: "AIzaSyAFh17kO3JE1CyuH9XrqWu19RvadSEFP20",
-        authDomain: "gift-planning-form.firebaseapp.com",
-        projectId: "gift-planning-form",
-        storageBucket: "gift-planning-form.firebasestorage.app",
-        messagingSenderId: "777169863477",
-        appId: "1:777169863477:web:2fd112b16b0982dc7c427c",
-        measurementId: "G-6XL7M7Z692"
+// 1. Firebase Initialization
+const firebaseConfig = {
+    apiKey: "AIzaSyAFh17kO3JE1CyuH9XrqWu19RvadSEFP20",
+    authDomain: "gift-planning-form.firebaseapp.com",
+    projectId: "gift-planning-form",
+    storageBucket: "gift-planning-form.firebasestorage.app",
+    messagingSenderId: "777169863477",
+    appId: "1:777169863477:web:2fd112b16b0982dc7c427c",
+    measurementId: "G-6XL7M7Z692"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// 2. Cloudinary Variables
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpsmcu07f/image/upload";
+const CLOUDINARY_PRESET = "gift_planning";
+let uploadedImageUrls = [];
+let uploadedCorporateLogoUrl = ""; 
+
+// 3. Pushover Configuration 
+const PUSHOVER_USER_KEY = "ueb3ouifx46g56n7by3rfh198nmagb";   
+const PUSHOVER_APP_TOKEN = "az24xk23yyn69ej8v363ke5u92v834"; 
+
+// View Switcher Engine
+function switchFormView(targetView) {
+    const viewInd = document.getElementById('view-individual');
+    const viewBulk = document.getElementById('view-bulk');
+    const tabInd = document.getElementById('tab-individual');
+    const tabBulk = document.getElementById('tab-bulk');
+
+    if (targetView === 'individual') {
+        viewInd.style.display = "block";
+        viewBulk.style.display = "none";
+        tabInd.classList.add('active');
+        tabBulk.classList.remove('active');
+    } else {
+        viewInd.style.display = "none";
+        viewBulk.style.display = "block";
+        tabBulk.classList.add('active');
+        tabInd.classList.remove('active');
+    }
+    lucide.createIcons();
+}
+
+// Cloudinary Reference Upload Handler (Single Gifts)
+document.getElementById('photo-upload').addEventListener('change', async (e) => {
+    const files = e.target.files;
+    const statusDiv = document.getElementById('upload-status');
+    uploadedImageUrls = []; 
+
+    if (files.length === 0) return;
+    statusDiv.innerText = "Uploading reference photos...";
+
+    for (let file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_PRESET);
+
+        try {
+            let response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+            let data = await response.json();
+            if (data.secure_url) {
+                uploadedImageUrls.push(data.secure_url);
+            }
+        } catch (err) {
+            console.error("Cloudinary Upload Error:", err);
+            statusDiv.innerText = "Error uploading one or more photos.";
+            return;
+        }
+    }
+    statusDiv.innerText = `✨ ${uploadedImageUrls.length} photo(s) uploaded successfully!`;
+});
+
+// ✅ ADDED: Cloudinary Corporate Logo Upload Handler
+// Assumes HTML elements: id="bulk-logo-upload" and id="bulk-upload-status"
+const bulkLogoInput = document.getElementById('bulk-logo-upload');
+if (bulkLogoInput) {
+    bulkLogoInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        const statusDiv = document.getElementById('bulk-upload-status');
+        uploadedCorporateLogoUrl = ""; 
+
+        if (!file) return;
+        if (statusDiv) statusDiv.innerText = "Uploading corporate logo...";
+
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_PRESET);
+
+        try {
+            let response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+            let data = await response.json();
+            if (data.secure_url) {
+                uploadedCorporateLogoUrl = data.secure_url;
+                if (statusDiv) statusDiv.innerText = "✨ Corporate logo uploaded successfully!";
+            }
+        } catch (err) {
+            console.error("Cloudinary Corporate Logo Upload Error:", err);
+            if (statusDiv) statusDiv.innerText = "⚠️ Error uploading corporate logo.";
+        }
+    });
+}
+
+function triggerPushoverAlert(title, messageContent) {
+    const url = "https://api.pushover.net/1/messages.json";
+    const payload = new URLSearchParams();
+    payload.append("token", PUSHOVER_APP_TOKEN);
+    payload.append("user", PUSHOVER_USER_KEY);
+    payload.append("title", title);
+    payload.append("message", messageContent);
+    payload.append("sound", "cashregister");
+
+    fetch(url, {
+        method: "POST",
+        body: payload,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
+    .then(response => response.json())
+    .then(data => console.log("Pushover notification dispatched:", data))
+    .catch(err => console.error("Pushover notification failed:", err));
+}
+
+// Form submission processing logic for Bulk Corporate requests
+document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const submitBtn = document.getElementById('bulkSubmitBtn');
+    const msgDiv = document.getElementById('bulk-form-message');
+    
+    submitBtn.innerText = "Processing Corporate Request...";
+    submitBtn.disabled = true;
+
+    const getRadioValue = (name) => {
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+        return checked ? checked.value : '';
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const bulkPayload = {
+        timestamp: new Date().toISOString(),
+        companyName: document.getElementById('bulk-company').value,
+        contactName: document.getElementById('bulk-contact').value,
+        email: document.getElementById('bulk-email').value,
+        phone: document.getElementById('bulk-phone').value,
+        quantityBracket: document.getElementById('bulk-quantity').value,
+        deadline: document.getElementById('bulk-deadline').value,
+        shippingStyle: document.getElementById('bulk-shipping').value,
+        budgetTier: document.getElementById('bulk-budget').value,
+        occasionContext: document.getElementById('bulk-occasion').value,
+        brandingDetails: document.getElementById('bulk-branding').value,
+        corporateLogoUrl: uploadedCorporateLogoUrl,
+        brandColors: document.getElementById('bulk-brand-colors').value,
+        personalizationTier: getRadioValue('bulk-personalization'),
+        status: "New Corporate Lead"
+    };
 
-    // 2. Cloudinary Variables
-   // 2. Cloudinary Variables
-    const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpsmcu07f/image/upload";
-    const CLOUDINARY_PRESET = "gift_planning";
-    let uploadedImageUrls = [];
-    let uploadedCorporateLogoUrl = ""; // 👈 ADD THIS LINE TO PREVENT THE CRASH
-    
-    // 3. Pushover Configuration 
-    // Get these from your dashboard at https://pushover.net
-    const PUSHOVER_USER_KEY = "ueb3ouifx46g56n7by3rfh198nmagb";   // Your individual User Key
-    const PUSHOVER_APP_TOKEN = "az24xk23yyn69ej8v363ke5u92v834"; // The API Token for the application you created
+    db.collection("bulk_submissions").add(bulkPayload)
+        .then(() => {
+            const company = document.getElementById('bulk-company').value || "No Company Name";
+            const contact = document.getElementById('bulk-contact').value;
+            const pTier = getRadioValue('bulk-personalization') || "Tier 1";
+            
+            triggerPushoverAlert(
+                "💼 New Corporate Request!",
+                `Company: ${company}\nContact: ${contact}\nPersonalization Tier: ${pTier}\nReview lead details immediately.`
+            );
 
-    // View Switcher Engine
-    function switchFormView(targetView) {
-        const viewInd = document.getElementById('view-individual');
-        const viewBulk = document.getElementById('view-bulk');
-        const tabInd = document.getElementById('tab-individual');
-        const tabBulk = document.getElementById('tab-bulk');
-
-        if (targetView === 'individual') {
-            viewInd.style.display = "block";
-            viewBulk.style.display = "none";
-            tabInd.classList.add('active');
-            tabBulk.classList.remove('active');
-        } else {
-            viewInd.style.display = "none";
-            viewBulk.style.display = "block";
-            tabBulk.classList.add('active');
-            tabInd.classList.remove('active');
-        }
-        lucide.createIcons();
-    }
-
-    // Cloudinary Reference Upload Handler
-    document.getElementById('photo-upload').addEventListener('change', async (e) => {
-        const files = e.target.files;
-        const statusDiv = document.getElementById('upload-status');
-        uploadedImageUrls = []; 
-
-        if (files.length === 0) return;
-        statusDiv.innerText = "Uploading reference photos...";
-
-        for (let file of files) {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', CLOUDINARY_PRESET);
-
-            try {
-                let response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
-                let data = await response.json();
-                if (data.secure_url) {
-                    uploadedImageUrls.push(data.secure_url);
-                }
-            } catch (err) {
-                console.error("Cloudinary Upload Error:", err);
-                statusDiv.innerText = "Error uploading one or more photos.";
-                return;
-            }
-        }
-        statusDiv.innerText = `✨ ${uploadedImageUrls.length} photo(s) uploaded successfully!`;
-    });
-    function triggerPushoverAlert(title, messageContent) {
-        const url = "https://api.pushover.net/1/messages.json";
-        
-        // We use URLSearchParams to pass variables cleanly as application/x-www-form-urlencoded
-        const payload = new URLSearchParams();
-        payload.append("token", PUSHOVER_APP_TOKEN);
-        payload.append("user", PUSHOVER_USER_KEY);
-        payload.append("title", title);
-        payload.append("message", messageContent);
-        payload.append("sound", "cashregister"); // Optional: changes your phone's chime sound!
-
-        fetch(url, {
-            method: "POST",
-            body: payload,
-            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+            msgDiv.style.color = "#4a7c59";
+            msgDiv.innerHTML = "💼 **Success! Your bulk corporate request has been saved.**<br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Our procurement review takes up to **48 business hours**. We will email you a proposal breakdown alongside an invoice request for your refundable $50 design deposit so we can lock down your inventory and start vector mockups.</span>";
+            msgDiv.style.display = "block";
+            
+            e.target.reset();
+            const bulkStatusDiv = document.getElementById('bulk-upload-status');
+            if (bulkStatusDiv) bulkStatusDiv.innerText = "";
+            uploadedCorporateLogoUrl = "";
+            
+            submitBtn.innerText = "Submit Bulk Request";
+            submitBtn.disabled = false;
+            
+            setTimeout(() => { msgDiv.style.display = "none"; }, 15000);
         })
-        .then(response => response.json())
-        .then(data => console.log("Pushover notification dispatched:", data))
-        .catch(err => console.error("Pushover notification failed:", err));
-    }
+        .catch((error) => {
+            msgDiv.style.color = "#c94a4a";
+            msgDiv.innerText = "⚠️ Something went wrong writing to the system. Please try again.";
+            msgDiv.style.display = "block";
+            console.error("Firestore Corporate Write Error: ", error);
+            submitBtn.innerText = "Submit Bulk Request";
+            submitBtn.disabled = false;
+        });
+});
 
-    // Form submission processing logic for Single Custom Gifts
-    // Form submission processing logic for Single Custom Gifts
-    document.getElementById('giftForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const submitBtn = e.target.querySelector('.submit-btn');
-        submitBtn.innerText = "Saving Submission...";
-        submitBtn.disabled = true;
+// Form submission processing logic for Single Custom Gifts
+document.getElementById('giftForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const submitBtn = e.target.querySelector('.submit-btn');
+    submitBtn.innerText = "Saving Submission...";
+    submitBtn.disabled = true;
 
-        const getCheckedValues = (containerId) => {
-            const boxes = document.querySelectorAll(`${containerId} input[type="checkbox"]:checked`);
-            let values = [];
-            boxes.forEach(box => values.push(box.value));
-            return values;
-        };
+    const getCheckedValues = (containerId) => {
+        const boxes = document.querySelectorAll(`${containerId} input[type="checkbox"]:checked`);
+        let values = [];
+        boxes.forEach(box => values.push(box.value));
+        return values;
+    };
 
-        const getRadioValue = (name) => {
-            const checked = document.querySelector(`input[name="${name}"]:checked`);
-            return checked ? checked.value : '';
-        };
+    const getRadioValue = (name) => {
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+        return checked ? checked.value : '';
+    };
 
-        const submissionPayload = {
-            timestamp: new Date().toISOString(),
-            customerName: document.getElementById('cust-name').value,
-            customerEmail: document.getElementById('cust-email').value,
-            customerPhone: document.getElementById('cust-phone').value,
-            preferredContact: getRadioValue('contact'),
-            recipientName: document.getElementById('gift-for').value,
-            recipientRelationship: document.getElementById('relationship').value,
-            recipientAgeRange: document.getElementById('age-range').value,
-            celebratedOccasion: document.getElementById('occasion').value,
-            deliveryDateNeeded: document.getElementById('needed-date').value,
-            descriptiveThreeWords: [
-                document.getElementById('w1').value,
-                document.getElementById('w2').value,
-                document.getElementById('w3').value
-            ].filter(Boolean).join(', '),
-            hobbiesAndInterests: document.getElementById('hobbies').value,
-            freeTimeEnjoyment: document.getElementById('free-time').value,
-            favoriteColors: document.getElementById('fav-colors').value,
-            favoriteMediaAndActivities: document.getElementById('fav-media').value,
-            whatMakesYouSmile: document.getElementById('makes-smile').value,
-            favoriteMemory: document.getElementById('fav-memory').value,
-            unforgettableMoment: document.getElementById('never-forget').value,
-            heartfeltWishMessage: document.getElementById('wish-they-knew').value,
-            recipientNickname: document.getElementById('nickname').value,
-            favoriteQuoteSaying: document.getElementById('fav-quote').value,
-            insideJokeContext: document.getElementById('inside-joke').value,
-            notableImportantDates: document.getElementById('important-dates').value,
-            specificNamesToInclude: document.getElementById('included-names').value,
-            cloudinaryPhotoLinks: uploadedImageUrls,
-            chosenGiftStyles: getCheckedValues('#style-group'),
-            intendedEmotions: getCheckedValues('#emotion-group'),
-            productPreferences: getCheckedValues('#product-group'),
-            wantsQrCodeMedia: getRadioValue('qr'),
-            allottedBudget: getRadioValue('budget')
-        };
+    const submissionPayload = {
+        timestamp: new Date().toISOString(),
+        customerName: document.getElementById('cust-name').value,
+        customerEmail: document.getElementById('cust-email').value,
+        customerPhone: document.getElementById('cust-phone').value,
+        preferredContact: getRadioValue('contact'),
+        recipientName: document.getElementById('gift-for').value,
+        recipientRelationship: document.getElementById('relationship').value,
+        recipientAgeRange: document.getElementById('age-range').value,
+        celebratedOccasion: document.getElementById('occasion').value,
+        deliveryDateNeeded: document.getElementById('needed-date').value,
+        descriptiveThreeWords: [
+            document.getElementById('w1').value,
+            document.getElementById('w2').value,
+            document.getElementById('w3').value
+        ].filter(Boolean).join(', '),
+        hobbiesAndInterests: document.getElementById('hobbies').value,
+        freeTimeEnjoyment: document.getElementById('free-time').value,
+        favoriteColors: document.getElementById('fav-colors').value,
+        favoriteMediaAndActivities: document.getElementById('fav-media').value,
+        whatMakesYouSmile: document.getElementById('makes-smile').value,
+        favoriteMemory: document.getElementById('fav-memory').value,
+        unforgettableMoment: document.getElementById('never-forget').value,
+        heartfeltWishMessage: document.getElementById('wish-they-knew').value,
+        recipientNickname: document.getElementById('nickname').value,
+        favoriteQuoteSaying: document.getElementById('fav-quote').value,
+        insideJokeContext: document.getElementById('inside-joke').value,
+        notableImportantDates: document.getElementById('important-dates').value,
+        specificNamesToInclude: document.getElementById('included-names').value,
+        cloudinaryPhotoLinks: uploadedImageUrls,
+        chosenGiftStyles: getCheckedValues('#style-group'),
+        intendedEmotions: getCheckedValues('#emotion-group'),
+        productPreferences: getCheckedValues('#product-group'),
+        wantsQrCodeMedia: getRadioValue('qr'),
+        allottedBudget: getRadioValue('budget')
+    };
 
-        db.collection("gift_submissions").add(submissionPayload)
-            .then(() => {
-                // Pushover Alert
-                const name = document.getElementById('cust-name').value;
-                const budget = document.querySelector('input[name="budget"]:checked')?.value || "Unset";
-                triggerPushoverAlert(
-                    "🎁 New Single Gift Plan!",
-                    `From: ${name}\nBudget Range: ${budget}\nCheck Firestore dashboard for details.`
-                );
+    db.collection("gift_submissions").add(submissionPayload)
+        .then(() => {
+            const name = document.getElementById('cust-name').value;
+            const budget = document.querySelector('input[name="budget"]:checked')?.value || "Unset";
+            triggerPushoverAlert(
+                "🎁 New Single Gift Plan!",
+                `From: ${name}\nBudget Range: ${budget}\nCheck Firestore dashboard for details.`
+            );
 
-                // UI Success Update with Timeline Note
-                const msgDiv = document.getElementById('form-message');
-                msgDiv.style.color = "#4a7c59"; 
-                msgDiv.innerHTML = "✨ **Success! Your gift plan has been submitted.**<br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Please check your inbox. You will receive your custom quote and an invoice request for the $20 planning fee within **48 business hours**. Your design layout will begin as soon as the deposit is completed!</span>";
-                msgDiv.style.display = "block";
-                
-                e.target.reset();
-                document.getElementById('upload-status').innerText = "";
-                uploadedImageUrls = [];
-                submitBtn.innerText = "Submit Gift Plan";
-                submitBtn.disabled = false;
-                
-                // Keep it visible longer so they can read the timeline details
-                setTimeout(() => { msgDiv.style.display = "none"; }, 15000);
-            })
-            .catch((error) => {
-                const msgDiv = document.getElementById('form-message');
-                msgDiv.style.color = "#c94a4a"; 
-                msgDiv.innerText = "⚠️ Something went wrong saving to the database. Please try again.";
-                msgDiv.style.display = "block";
-                console.error("Firebase database write error: ", error);
-                submitBtn.innerText = "Submit Gift Plan";
-                submitBtn.disabled = false;
-            });
-    });
-        db.collection("gift_submissions").add(submissionPayload)
-            .then(() => {
-                elector('input[name="budget"]:checked')?.value || "Unset";
-                triggerPushoverAlert(
-                    "🎁 New Single Gift Plan!",
-                    `From: ${name}\nBudget Range: ${budget}\nCheck Firestore dashboard for details.`
-                );
-                const msgDiv = document.getElementById('form-message');
-                msgDiv.style.color = "#4a7c59"; 
-                msgDiv.innerText = "✨ Success! Your beautiful gift plan has been submitted successfully.";
-                msgDiv.style.display = "block";
-                e.target.reset();
-                document.getElementById('upload-status').innerText = "";
-                uploadedImageUrls = [];
-                submitBtn.innerText = "Submit Gift Plan";
-                submitBtn.disabled = false;
-                setTimeout(() => { msgDiv.style.display = "none"; }, 7000);
-            })
-            .catch((error) => {
-                const msgDiv = document.getElementById('form-message');
-                msgDiv.style.color = "#c94a4a"; 
-                msgDiv.innerText = "⚠️ Something went wrong saving to the database. Please try again.";
-                msgDiv.style.display = "block";
-                console.error("Firebase database write error: ", error);
-                submitBtn.innerText = "Submit Gift Plan";
-                submitBtn.disabled = false;
-            });
-    
+            const msgDiv = document.getElementById('form-message');
+            msgDiv.style.color = "#4a7c59"; 
+            msgDiv.innerHTML = "✨ **Success! Your gift plan has been submitted.**<br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Please check your inbox. You will receive your custom quote and an invoice request for the $20 planning fee within **48 business hours**. Your design layout will begin as soon as the deposit is completed!</span>";
+            msgDiv.style.display = "block";
+            
+            e.target.reset();
+            document.getElementById('upload-status').innerText = "";
+            uploadedImageUrls = [];
+            submitBtn.innerText = "Submit Gift Plan";
+            submitBtn.disabled = false;
+            
+            setTimeout(() => { msgDiv.style.display = "none"; }, 15000);
+        })
+        .catch((error) => {
+            const msgDiv = document.getElementById('form-message');
+            msgDiv.style.color = "#c94a4a"; 
+            msgDiv.innerText = "⚠️ Something went wrong saving to the database. Please try again.";
+            msgDiv.style.display = "block";
+            console.error("Firebase database write error: ", error);
+            submitBtn.innerText = "Submit Gift Plan";
+            submitBtn.disabled = false;
+        });
+});
 
-   // Form submission processing logic for Bulk Corporate requests
-    document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const submitBtn = document.getElementById('bulkSubmitBtn');
-        const msgDiv = document.getElementById('bulk-form-message');
-        
-        submitBtn.innerText = "Processing Corporate Request...";
-        submitBtn.disabled = true;
-
-        const getRadioValue = (name) => {
-            const checked = document.querySelector(`input[name="${name}"]:checked`);
-            return checked ? checked.value : '';
-        };
-
-        const bulkPayload = {
-            timestamp: new Date().toISOString(),
-            companyName: document.getElementById('bulk-company').value,
-            contactName: document.getElementById('bulk-contact').value,
-            email: document.getElementById('bulk-email').value,
-            phone: document.getElementById('bulk-phone').value,
-            quantityBracket: document.getElementById('bulk-quantity').value,
-            deadline: document.getElementById('bulk-deadline').value,
-            shippingStyle: document.getElementById('bulk-shipping').value,
-            budgetTier: document.getElementById('bulk-budget').value,
-            occasionContext: document.getElementById('bulk-occasion').value,
-            brandingDetails: document.getElementById('bulk-branding').value,
-            corporateLogoUrl: uploadedCorporateLogoUrl,
-            brandColors: document.getElementById('bulk-brand-colors').value,
-            personalizationTier: getRadioValue('bulk-personalization'),
-            status: "New Corporate Lead"
-        };
-
-        db.collection("bulk_submissions").add(bulkPayload)
-            .then(() => {
-                // Pushover Alert
-                const company = document.getElementById('bulk-company').value || "No Company Name";
-                const contact = document.getElementById('bulk-contact').value;
-                const pTier = document.querySelector('input[name="bulk-personalization"]:checked')?.value || "Tier 1";
-                triggerPushoverAlert(
-                    "💼 New Corporate Request!",
-                    `Company: ${company}\nContact: ${contact}\nPersonalization Tier: ${pTier}\nReview lead details immediately.`
-                );
-
-                // UI Success Update with Corporate Timeline Note
-                msgDiv.style.color = "#4a7c59";
-                msgDiv.innerHTML = "💼 **Success! Your bulk corporate request has been saved.**<br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Our procurement review takes up to **48 business hours**. We will email you a proposal breakdown alongside an invoice request for your refundable $50 design deposit so we can lock down your inventory and start vector mockups.</span>";
-                msgDiv.style.display = "block";
-                
-                e.target.reset();
-                submitBtn.innerText = "Submit Bulk Request";
-                submitBtn.disabled = false;
-                
-                // Keep visible longer for corporate tracking context
-                setTimeout(() => { msgDiv.style.display = "none"; }, 15000);
-            })
-            .catch((error) => {
-                msgDiv.style.color = "#c94a4a";
-                msgDiv.innerText = "⚠️ Something went wrong writing to the system. Please try again.";
-                msgDiv.style.display = "block";
-                console.error("Firestore Corporate Write Error: ", error);
-                submitBtn.innerText = "Submit Bulk Request";
-                submitBtn.disabled = false;
-            });
-    });
-
-    lucide.createIcons();
-</script>
+lucide.createIcons();
 </body>
 </html>
