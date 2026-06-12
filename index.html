@@ -853,6 +853,19 @@ function triggerPushoverAlert(title, messageContent) {
     .then(data => console.log("Pushover notification dispatched:", data))
     .catch(err => console.error("Pushover notification failed:", err));
 }
+
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrk5yPmtqPmYs_HjBPnOJMJKg2Wnq90Z5WZeVUiEDeBcUglv-BBoBmK_CTnsA0F9KU1w/exec";
+
+function sendToAppsScript(payload) {
+    fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", // IMPORTANT for Apps Script
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    }).catch(err => console.error("Apps Script error:", err));
+}
 function showMessage(elementId, message, success = true) {
     const box = document.getElementById(elementId);
 
@@ -907,6 +920,7 @@ document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
 
     db.collection("bulk_submissions").add(bulkPayload)
         .then(() => {
+            sendToAppsScript(bulkPayload);
             const company = document.getElementById('bulk-company').value || "No Company Name";
             const contact = document.getElementById('bulk-contact').value;
             const pTier = getRadioValue('bulk-personalization') || "Tier 1";
@@ -1004,6 +1018,7 @@ document.getElementById('giftForm').addEventListener('submit', function(e) {
 
     db.collection("gift_submissions").add(submissionPayload)
         .then(() => {
+            sendToAppsScript(submissionPayload);
             const name = document.getElementById('cust-name').value;
             const budget = document.querySelector('input[name="budget"]:checked')?.value || "Unset";
             triggerPushoverAlert(
