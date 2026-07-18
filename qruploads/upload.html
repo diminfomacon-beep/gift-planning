@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Upload Photos</title>
+
+<link rel="stylesheet" href="style.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>Upload Your Photos</h1>
+
+
+<input id="name" placeholder="Customer Name">
+
+
+<input id="order" placeholder="Order Number">
+
+
+<input id="email" placeholder="Email">
+
+
+<textarea id="notes" placeholder="Notes"></textarea>
+
+
+
+<input 
+type="file"
+id="files"
+multiple
+accept="image/*">
+
+
+
+<button class="button" onclick="uploadImages()">
+
+Upload Photos
+
+</button>
+
+
+
+<p id="status"></p>
+
+
+
+</div>
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
