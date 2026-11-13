@@ -907,7 +907,7 @@ document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
                 `Company: ${company}\nContact: ${contact}\nPersonalization Tier: ${pTier}\nReview lead details immediately.`
             );
 
-            showMessage('bulk-form-message', "💼 <strong>Success! Your bulk corporate request has been saved.</strong><br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Our procurement review takes up to **48 business hours**. We will email you a proposal breakdown alongside an invoice request for your refundable $50 design deposit so we can lock down your inventory and start vector mockups.</span>", true);
+            showMessage('bulk-form-message', "💼 <strong>Success! Your bulk corporate request has been saved.</strong><br><span style='font-weight: normal; font-size: 0.85rem; display: block; margin-top: 5px;'>Our procurement review takes up to **48 business hours**. We will email you a proposal breakdown alongside an invoice request for your non-refundable $50 design deposit so we can lock down your inventory and start vector mockups.</span>", true);
             
             e.target.reset();
             const bulkStatusDiv = document.getElementById('bulk-upload-status');
