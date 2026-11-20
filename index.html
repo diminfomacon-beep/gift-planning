@@ -565,24 +565,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="emotion-group" style="margin-bottom: 25px;">
-                        <label style="margin-bottom: 10px;">What emotion or reaction do you want to evoke when they open it?</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item"><input type="checkbox" id="e1" value="Happy Tears & Nostalgia"><label for="e1">Happy Tears / Deeply Moved</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="e2" value="Laughter & Amusement"><label for="e2">Laughter & Great Amusement</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="e3" value="Awe, Wonder & Impressed"><label for="e3">Awe / Utter Amazement</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="e4" value="Comforted, Valued & Loved"><label for="e4">Deeply Comforted & Loved</label></div>
-                        </div>
-                    </div>
 
                     <div class="form-group" id="product-group" style="margin-bottom: 25px;">
-                        <label style="margin-bottom: 10px;">Are there particular product mediums you are interested in exploring?</label>
+                        <label style="margin-bottom: 10px;">Are there particular product types you are interested in exploring?</label>
                         <div class="checkbox-group">
-                            <div class="checkbox-item"><input type="checkbox" id="p1" value="Custom Engraved Wooden Decor/Keepsakes"><label for="p1">Engraved Wood Keepsakes</label></div>
                             <div class="checkbox-item"><input type="checkbox" id="p2" value="Personalized Glassware or Drinkware"><label for="p2">Custom Glass/Drinkware</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="p3" value="Custom Apparel / Embroidered Textiles"><label for="p3">Bespoke Apparel/Textiles</label></div>
+                            <div class="checkbox-item"><input type="checkbox" id="p3" value="Apparel"><label for="p3">Apparel</label></div>
                             <div class="checkbox-item"><input type="checkbox" id="p4" value="Curated Gift Boxes / Multi-Item Set"><label for="p4">Curated Gift Box / Basket Sets</label></div>
-                            <div class="checkbox-item"><input type="checkbox" id="p5" value="Functional Leather Goods"><label for="p5">Personalized Leather Goods</label></div>
                             <div class="checkbox-item"><input type="checkbox" id="p6" value="Open to any creative media suggestions"><label for="p6">Open to Any Creative Mediums</label></div>
                         </div>
                     </div>
@@ -1089,7 +1078,6 @@ document.getElementById('giftForm').addEventListener('submit', function(e) {
         specificNamesToInclude: document.getElementById('included-names').value,
         cloudinaryPhotoLinks: uploadedImageUrls,
         chosenGiftStyles: getCheckedValues('#style-group'),
-        intendedEmotions: getCheckedValues('#emotion-group'),
         productPreferences: getCheckedValues('#product-group'),
         wantsQrCodeMedia: getRadioValue('qr'),
         allottedBudget: getRadioValue('budget')
