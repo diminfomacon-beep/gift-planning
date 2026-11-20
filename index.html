@@ -50,6 +50,74 @@
             padding: 40px 20px;
         }
 
+        /* Hero — page header so the whole page can live on GitHub */
+        .hero {
+            background: linear-gradient(180deg, #f4f0ea, #fdfaf6);
+            border-bottom: 1px solid var(--border-color);
+            padding: 56px 20px 46px;
+            text-align: center;
+        }
+
+        .hero-inner {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .hero .eyebrow {
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0 0 14px;
+        }
+
+        .hero h1 {
+            font-family: 'Merriweather', serif;
+            color: var(--secondary-color);
+            font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+            line-height: 1.2;
+            margin: 0 0 14px;
+        }
+
+        .hero .lede {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            max-width: 36rem;
+            margin: 0 auto;
+        }
+
+        .hero-fees {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hero-fee {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--primary-color);
+            border-radius: var(--radius-md);
+            padding: 14px 20px;
+            box-shadow: var(--shadow-sm);
+            text-align: left;
+            min-width: 240px;
+        }
+
+        .hero-fee strong {
+            display: block;
+            font-family: 'Merriweather', serif;
+            color: var(--secondary-color);
+            font-size: 1.05rem;
+        }
+
+        .hero-fee span {
+            font-size: .9rem;
+            color: var(--text-light);
+        }
+
         /* Top-Level Navigation Engine */
         .navigation-tabs {
             display: flex;
@@ -314,6 +382,19 @@
     </style>
 </head>
 <body>
+
+<!-- Hero — page header -->
+<header class="hero">
+    <div class="hero-inner">
+        <p class="eyebrow">D.I.M. Bright Ideas LLC &middot; Gift Planning</p>
+        <h1>Not sure what to give? We'll plan it with you.</h1>
+        <p class="lede">Tell us about your person and the occasion &mdash; we'll help you choose, design, and deliver the right gift. One thoughtful gift, or branded gifts for a whole team.</p>
+        <div class="hero-fees">
+            <div class="hero-fee"><strong>$20 planning fee</strong><span>Individual gifts &mdash; applied toward your final purchase</span></div>
+            <div class="hero-fee"><strong>$50 design deposit</strong><span>Corporate &amp; bulk orders &mdash; applied to your total order value</span></div>
+        </div>
+    </div>
+</header>
 
 <div class="portal-wrapper">
 
