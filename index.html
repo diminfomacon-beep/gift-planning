@@ -379,6 +379,25 @@
             background: #ffffff;
             border: 1px solid var(--border-color);
         }
+    
+        /* Step-by-step wizard (Individual form only) */
+        .step-panel { display: none; }
+        .step-panel.active { display: block; }
+        .wizard-progress { margin-bottom: 28px; }
+        .wizard-meta { font-size: .85rem; font-weight: 600; color: var(--text-light); margin-bottom: 8px; }
+        .progress-track { height: 8px; background: var(--accent-soft); border: 1px solid var(--border-color); border-radius: 999px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary-color); width: 25%; transition: width .3s ease; }
+        .wizard-steps { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; font-size: .78rem; font-weight: 600; color: var(--text-light); }
+        .wizard-steps span { flex: 1; text-align: center; }
+        .wizard-steps span.active { color: var(--secondary-color); }
+        .wizard-steps span.done { color: var(--primary-color); }
+        .step-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; }
+        .step-nav .btn-next, .step-nav .btn-back { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; padding: 13px 26px; border-radius: var(--radius-sm); cursor: pointer; transition: background-color .2s, border-color .2s; }
+        .step-nav .btn-next { background-color: var(--secondary-color); color: #ffffff; border: none; }
+        .step-nav .btn-next:hover { background-color: var(--primary-hover); }
+        .step-nav .btn-back { background: transparent; color: var(--secondary-color); border: 1.5px solid var(--border-color); }
+        .step-nav .btn-back:hover { border-color: var(--primary-color); }
+        .step-nav .btn-next:only-child { margin-left: auto; }
     </style>
 </head>
 <body>
@@ -417,7 +436,20 @@
                     <p>Provide information about your recipient and relationship to help build a meaningful custom gift system.</p>
                 </div>
 
-                <!-- Section: Client Parameters -->
+                
+                <!-- Step-by-step progress (Individual form) -->
+                <div class="wizard-progress" id="wizard-progress">
+                    <div class="wizard-meta"><span id="wizard-label">Step 1 of 4</span></div>
+                    <div class="progress-track"><div class="progress-fill" id="wizard-fill"></div></div>
+                    <div class="wizard-steps" id="wizard-steps">
+                        <span class="active">About you</span>
+                        <span>About them</span>
+                        <span>Personality &amp; memories</span>
+                        <span>Style, photos &amp; budget</span>
+                    </div>
+                </div>
+                <div class="step-panel active" data-step="1">
+<!-- Section: Client Parameters -->
                 <section>
                     <div class="section-title">
                         <i data-lucide="user" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Your Contact Details
@@ -437,7 +469,10 @@
                     </div>
                 </section>
 
-                <!-- Section: Recipient Profile Matrix -->
+                <div class="step-nav"><button type="button" class="btn-next" onclick="wizardNext()">Next: About Them →</button></div>
+                </div>
+                <div class="step-panel" data-step="2">
+<!-- Section: Recipient Profile Matrix -->
                 <section>
                     <div class="section-title">
                         <i data-lucide="heart" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> The Recipient Profile
@@ -462,7 +497,10 @@
                     </div>
                 </section>
 
-                <!-- Section: Analytical Profiling Engine -->
+                <div class="step-nav"><button type="button" class="btn-back" onclick="wizardBack()">← Back</button><button type="button" class="btn-next" onclick="wizardNext()">Next: Personality & Memories →</button></div>
+                </div>
+                <div class="step-panel" data-step="3">
+<!-- Section: Analytical Profiling Engine -->
                 <section>
                     <div class="section-title">
                         <i data-lucide="sparkles" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Personality Insight Mapping
@@ -481,8 +519,7 @@
                     <div class="form-group"><label>Favorite Shows, Movies, Books, Music, or Teams:</label><textarea id="fav-media" placeholder="List any specific fandoms, pop-culture items, literary classics, musical profiles, or sports franchises they love..."></textarea></div>
                     <div class="form-group"><label>What always brings a smile to their face?</label><textarea id="makes-smile" placeholder="Is it their dog, a specific type of sweet treat, seeing others happy, or witty dad jokes?"></textarea></div>
                 </section>
-
-                <!-- Section: Memory Mapping Structure -->
+<!-- Section: Memory Mapping Structure -->
                 <section>
                     <div class="section-title">
                         <i data-lucide="scroll" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Shared Memories & Emotional Context
@@ -501,7 +538,10 @@
                     </div>
                 </section>
 
-                <!-- Section: Visual & Asset Frameworks -->
+                <div class="step-nav"><button type="button" class="btn-back" onclick="wizardBack()">← Back</button><button type="button" class="btn-next" onclick="wizardNext()">Next: Style, Photos & Budget →</button></div>
+                </div>
+                <div class="step-panel" data-step="4">
+<!-- Section: Visual & Asset Frameworks -->
                 <section>
                     <div class="section-title">
                         <i data-lucide="image" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Visual Reference Uploads
@@ -515,8 +555,7 @@
                         </div>
                     </div>
                 </section>
-
-                <!-- Section: Curation Metrics -->
+<!-- Section: Curation Metrics -->
                 <section>
                     <div class="section-title">
                         <i data-lucide="sliders" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Design Curation Vectors
@@ -564,8 +603,7 @@
                         </div>
                     </div>
                 </section>
-
-                <section>
+<section>
                     <div class="section-title">
                         <i data-lucide="banknote" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Budget
                     </div>
@@ -581,6 +619,10 @@
                         </div>
                     </div>
                 </section>
+
+                <div class="step-nav"><button type="button" class="btn-back" onclick="wizardBack()">← Back</button></div>
+                </div>
+
 
                 <button type="submit" class="submit-btn">Submit Gift Plan</button>
                 <div id="form-message" style="margin-top: 15px; font-weight: bold; font-size: 0.95rem; display: none;"></div>
@@ -1094,6 +1136,61 @@ document.getElementById('giftForm').addEventListener('submit', function(e) {
             submitBtn.disabled = false;
         });
 });
+
+
+// Step-by-step wizard (Individual form only) — no changes to any submission,
+// upload, or external-service code. Only shows/hides the existing sections.
+var currentStep = 1;
+var TOTAL_STEPS = 4;
+function showStep(n) {
+    currentStep = Math.max(1, Math.min(TOTAL_STEPS, n));
+    var panels = document.querySelectorAll('#giftForm .step-panel');
+    panels.forEach(function(p, i) { p.classList.toggle('active', i === currentStep - 1); });
+    var fill = document.getElementById('wizard-fill');
+    if (fill) fill.style.width = (currentStep / TOTAL_STEPS * 100) + '%';
+    var label = document.getElementById('wizard-label');
+    if (label) label.textContent = 'Step ' + currentStep + ' of ' + TOTAL_STEPS;
+    var steps = document.querySelectorAll('#wizard-steps span');
+    steps.forEach(function(s, i) {
+        s.classList.toggle('active', i === currentStep - 1);
+        s.classList.toggle('done', i < currentStep - 1);
+    });
+    var submitBtn = document.querySelector('#giftForm .submit-btn');
+    if (submitBtn) submitBtn.style.display = (currentStep === TOTAL_STEPS) ? '' : 'none';
+    var head = document.querySelector('#giftForm .form-header');
+    if (head) head.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function wizardNext() {
+    var panel = document.querySelector('#giftForm .step-panel.active');
+    if (panel) {
+        var req = panel.querySelectorAll('[required]');
+        for (var i = 0; i < req.length; i++) {
+            if (!req[i].checkValidity()) { req[i].reportValidity(); return; }
+        }
+    }
+    showStep(currentStep + 1);
+}
+function wizardBack() { showStep(currentStep - 1); }
+// Safety check on the final submit: if any required field in an earlier step
+// is empty, jump to that step instead of submitting. Never blocks a valid form.
+var wizardSubmitBtn = document.querySelector('#giftForm .submit-btn');
+if (wizardSubmitBtn) {
+    wizardSubmitBtn.addEventListener('click', function(ev) {
+        var panels = document.querySelectorAll('#giftForm .step-panel');
+        for (var i = 0; i < panels.length; i++) {
+            var req = panels[i].querySelectorAll('[required]');
+            for (var j = 0; j < req.length; j++) {
+                if (!req[j].checkValidity()) {
+                    ev.preventDefault();
+                    showStep(i + 1);
+                    req[j].reportValidity();
+                    return;
+                }
+            }
+        }
+    });
+}
+showStep(1);
 
 // Initialize Vector Icon Mapping Layer
 lucide.createIcons();
