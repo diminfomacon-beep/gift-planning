@@ -514,10 +514,8 @@
                         </div>
                     </div>
                     <div class="form-group"><label>What do they enjoy doing in their free time?</label><textarea id="hobbies" placeholder="Describe their passions, hobbies, weekend projects, or sports..."></textarea></div>
-                    <div class="form-group"><label>What is their ideal way to unwind or relax?</label><textarea id="free-time" placeholder="e.g., Reading a fantasy book by a fire, hiking mountain trails, spa days, drinking espresso..."></textarea></div>
                     <div class="form-group"><label>Favorite Colors or Style Aesthetic:</label><input type="text" id="fav-colors" placeholder="e.g., Emerald green, minimalist earthy tones, vibrant pastels, rustic wooden textures"></div>
                     <div class="form-group"><label>Favorite Shows, Movies, Books, Music, or Teams:</label><textarea id="fav-media" placeholder="List any specific fandoms, pop-culture items, literary classics, musical profiles, or sports franchises they love..."></textarea></div>
-                    <div class="form-group"><label>What always brings a smile to their face?</label><textarea id="makes-smile" placeholder="Is it their dog, a specific type of sweet treat, seeing others happy, or witty dad jokes?"></textarea></div>
                 </section>
 <!-- Section: Memory Mapping Structure -->
                 <section>
@@ -525,13 +523,8 @@
                         <i data-lucide="scroll" style="color: var(--primary-color); width: 18px; height: 18px; stroke-width: 2;"></i> Shared Memories & Emotional Context
                     </div>
                     <div class="form-group"><label>Describe a favorite memory you share with this person:</label><textarea id="fav-memory" placeholder="Where were you? What happened? Why does it stand out as a highlight in your relationship?"></textarea></div>
-                    <div class="form-group"><label>What is an unforgettable moment or challenge you've walked through together?</label><textarea id="never-forget" placeholder="A time when you supported each other, celebrated an unexpected victory, or solidified your bond..."></textarea></div>
                     <div class="form-group"><label>What is a message or heartfelt wish you always want them to remember?</label><textarea id="wish-they-knew" placeholder="If you could distill your deepest thoughts about their worth and impact on your life, what would you say?"></textarea></div>
-                    <div class="grid-2">
-                        <div class="form-group"><label>Do they have a meaningful nickname or term of endearment?</label><input type="text" id="nickname" placeholder="e.g., Chief, Bug, Mamma Bear"></div>
-                        <div class="form-group"><label>Is there a favorite quote, saying, or lyric they often repeat?</label><input type="text" id="fav-quote" placeholder="e.g., 'Everything happens for a reason', or a specific lyric"></div>
-                    </div>
-                    <div class="form-group"><label>Are there any funny inside jokes or lighthearted references to weave into the concepts?</label><textarea id="inside-joke" placeholder="Briefly describe the context so we can brainstorm subtle, humorous touchpoints..."></textarea></div>
+                    <div class="form-group"><label>Do they have a meaningful nickname or term of endearment?</label><input type="text" id="nickname" placeholder="e.g., Chief, Bug, Mamma Bear"></div>
                     <div class="grid-2">
                         <div class="form-group"><label>Notable Dates to potentially feature (Birthdays, Anniversaries, Milestones):</label><input type="text" id="important-dates" placeholder="e.g., Wedding date: 10/12/2018, Graduation: May 2024"></div>
                         <div class="form-group"><label>Are there other names or initials that should be integrated into the design?</label><input type="text" id="included-names" placeholder="e.g., Children's names, initials of family members, pet names"></div>
@@ -1087,16 +1080,11 @@ document.getElementById('giftForm').addEventListener('submit', function(e) {
             document.getElementById('w3').value
         ].filter(Boolean).join(', '),
         hobbiesAndInterests: document.getElementById('hobbies').value,
-        freeTimeEnjoyment: document.getElementById('free-time').value,
         favoriteColors: document.getElementById('fav-colors').value,
         favoriteMediaAndActivities: document.getElementById('fav-media').value,
-        whatMakesYouSmile: document.getElementById('makes-smile').value,
         favoriteMemory: document.getElementById('fav-memory').value,
-        unforgettableMoment: document.getElementById('never-forget').value,
         heartfeltWishMessage: document.getElementById('wish-they-knew').value,
         recipientNickname: document.getElementById('nickname').value,
-        favoriteQuoteSaying: document.getElementById('fav-quote').value,
-        insideJokeContext: document.getElementById('inside-joke').value,
         notableImportantDates: document.getElementById('important-dates').value,
         specificNamesToInclude: document.getElementById('included-names').value,
         cloudinaryPhotoLinks: uploadedImageUrls,
