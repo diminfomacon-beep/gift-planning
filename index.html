@@ -1166,6 +1166,15 @@ if (wizardSubmitBtn) {
         }
     });
 }
+// Delivery dates can't be in the past (Individual + Bulk forms)
+(function(){
+  var today = new Date();
+  var iso = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+  ['needed-date','bulk-deadline'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.min = iso;
+  });
+})();
 showStep(1);
 
 // Initialize Vector Icon Mapping Layer
