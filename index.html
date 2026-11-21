@@ -8,23 +8,23 @@
     <!-- Typography & Iconography Asset Architecture -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         /* Cascading Design Tokens & Variable Space */
         :root {
-            --primary-color: #b08968;
-            --primary-hover: #9c7356;
-            --secondary-color: #7f5539;
-            --bg-color: #fdfaf6;
+            --primary-color: #0e4d42;
+            --primary-hover: #0a3a32;
+            --secondary-color: #b45309;
+            --bg-color: #fffefb;
             --card-bg: #ffffff;
-            --text-color: #3d342e;
-            --text-light: #70645c;
-            --border-color: #e6dfd7;
-            --accent-soft: #f4f0ea;
-            --shadow-sm: 0 2px 4px rgba(61, 52, 46, 0.05);
-            --shadow-md: 0 8px 16px rgba(61, 52, 46, 0.08);
+            --text-color: #1b2a25;
+            --text-light: #54665e;
+            --border-color: #e9ddc9;
+            --accent-soft: #fff6e6;
+            --shadow-sm: 0 2px 4px rgba(27, 42, 37, 0.05);
+            --shadow-md: 0 8px 16px rgba(27, 42, 37, 0.08);
             --radius-sm: 6px;
             --radius-md: 12px;
         }
@@ -37,7 +37,7 @@
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -52,7 +52,7 @@
 
         /* Hero — page header so the whole page can live on GitHub */
         .hero {
-            background: linear-gradient(180deg, #f4f0ea, #fdfaf6);
+            background: linear-gradient(180deg, #fff6e6, #fffefb);
             border-bottom: 1px solid var(--border-color);
             padding: 56px 20px 46px;
             text-align: center;
@@ -73,7 +73,7 @@
         }
 
         .hero h1 {
-            font-family: 'Merriweather', serif;
+            font-family: 'DM Serif Display', serif;
             color: var(--secondary-color);
             font-size: clamp(1.9rem, 4.5vw, 2.6rem);
             line-height: 1.2;
@@ -108,7 +108,7 @@
 
         .hero-fee strong {
             display: block;
-            font-family: 'Merriweather', serif;
+            font-family: 'DM Serif Display', serif;
             color: var(--secondary-color);
             font-size: 1.05rem;
         }
@@ -131,7 +131,7 @@
         .tab-btn {
             background: none;
             border: none;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             font-size: 1.05rem;
             font-weight: 600;
             color: var(--text-light);
@@ -191,7 +191,7 @@
         }
 
         .form-header h1 {
-            font-family: 'Merriweather', serif;
+            font-family: 'DM Serif Display', serif;
             color: var(--secondary-color);
             font-size: 2rem;
             font-weight: 700;
@@ -208,7 +208,7 @@
         }
 
         .section-title {
-            font-family: 'Merriweather', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--secondary-color);
@@ -260,7 +260,7 @@
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
             background-color: #ffffff;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             font-size: 0.95rem;
             color: var(--text-color);
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -328,7 +328,7 @@
             color: #ffffff;
             border: none;
             padding: 16px 32px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             font-size: 1.05rem;
             font-weight: 600;
             border-radius: var(--radius-sm);
@@ -364,7 +364,7 @@
         }
 
         .side-card h3 {
-            font-family: 'Merriweather', serif;
+            font-family: 'DM Serif Display', serif;
             color: var(--secondary-color);
             font-size: 1.1rem;
             margin-bottom: 18px;
@@ -392,7 +392,7 @@
         .wizard-steps span.active { color: var(--secondary-color); }
         .wizard-steps span.done { color: var(--primary-color); }
         .step-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; }
-        .step-nav .btn-next, .step-nav .btn-back { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; padding: 13px 26px; border-radius: var(--radius-sm); cursor: pointer; transition: background-color .2s, border-color .2s; }
+        .step-nav .btn-next, .step-nav .btn-back { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; padding: 13px 26px; border-radius: var(--radius-sm); cursor: pointer; transition: background-color .2s, border-color .2s; }
         .step-nav .btn-next { background-color: var(--secondary-color); color: #ffffff; border: none; }
         .step-nav .btn-next:hover { background-color: var(--primary-hover); }
         .step-nav .btn-back { background: transparent; color: var(--secondary-color); border: 1.5px solid var(--border-color); }
@@ -461,7 +461,7 @@
                         <div class="form-group">
                             <label>Preferred Contact Method <span>*</span></label>
                             <div class="radio-group">
-                                <div class="radio-item"><input type="radio" name="contact" id="c1" value="Email" checked><label for="c1">Email</label></div>
+                                <div class="radio-item"><input type="radio" name="contact" id="c1" value="Email"><label for="c1">Email</label></div>
                                 <div class="radio-item"><input type="radio" name="contact" id="c2" value="Text/SMS"><label for="c2">Text/SMS</label></div>
                                 <div class="radio-item"><input type="radio" name="contact" id="c3" value="WhatsApp"><label for="c3">WhatsApp</label></div>
                             </div>
@@ -543,9 +543,6 @@
                         <label>Upload Reference Images or Style Directives:</label>
                         <input type="file" id="photo-upload" multiple accept="image/*">
                         <div id="upload-status" style="font-size: 0.85rem; margin-top: 6px; color: var(--primary-color); font-weight: bold;"></div>
-                        <div style="font-size: 0.725rem; color: var(--text-light); line-height: 1.4; margin-top: 5px;">
-                            <i><b>To upload more than one photo:</b> Please email <b>info@dimbrightideas.com</b> or text/WhatsApp <b>(478) 382-0150</b>. Include your name or phone number so we can link them to your form.</i>
-                        </div>
                     </div>
                 </section>
 <!-- Section: Curation Metrics -->
@@ -579,7 +576,7 @@
                     <div class="form-group" style="margin-bottom: 25px;">
                         <label>Would you like to include QR code experience to custom media (e.g., a voice note, video montage, song or custom message)? <span>*</span></label>
                         <div class="radio-group">
-                            <div class="radio-item"><input type="radio" name="qr" id="qr1" value="Yes, absolutely!" checked><label for="qr1">Yes, absolutely!</label></div>
+                            <div class="radio-item"><input type="radio" name="qr" id="qr1" value="Yes, absolutely!"><label for="qr1">Yes, absolutely!</label></div>
                             <div class="radio-item"><input type="radio" name="qr" id="qr2" value="No, keep it physical"><label for="qr2">No, keep it physical</label></div>
                             <div class="radio-item"><input type="radio" name="qr" id="qr3" value="Maybe, I want more details"><label for="qr3">Maybe / Tell me more</label></div>
                         </div>
@@ -593,7 +590,7 @@
                         <label>What's your gift budget?</label>
                         <div class="radio-group">
                             <div class="radio-item"><input type="radio" name="budget" id="b1" value="Under $30"><label for="b1">Under $30</label></div>
-                            <div class="radio-item"><input type="radio" name="budget" id="b2" value="$30 - $50" checked><label for="b2">$30 - $50</label></div>
+                            <div class="radio-item"><input type="radio" name="budget" id="b2" value="$30 - $50"><label for="b2">$30 - $50</label></div>
                             <div class="radio-item"><input type="radio" name="budget" id="b3" value="$50 - $75"><label for="b3">$50 - $75</label></div>
                             <div class="radio-item"><input type="radio" name="budget" id="b4" value="$75 - $100"><label for="b4">$75 - $100</label></div>
                             <div class="radio-item"><input type="radio" name="budget" id="b5" value="$100 - $150"><label for="b5">$100 - $150</label></div>
@@ -638,7 +635,7 @@
                 
                 <div class="side-card quote-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 30px 20px;">
                     <i data-lucide="heart-handshake" style="color: var(--primary-color); width: 26px; height: 26px; stroke-width: 1.5;"></i>
-                    <p style="font-family: 'Merriweather', serif; font-size: 1.1rem; font-weight: 700; line-height: 1.1; color: var(--text-color); margin: 0;">My goal isn't just to create a gift.</p>
+                    <p style="font-family: 'DM Serif Display', serif; font-size: 1.1rem; font-weight: 700; line-height: 1.1; color: var(--text-color); margin: 0;">My goal isn't just to create a gift.</p>
                     <p style="font-family: 'Brush Script MT', 'Brush Script Std', 'Bickham Script Pro', cursive; font-size: 1.5rem; line-height: 0.95; color: var(--primary-color); margin: 0; padding-top: 4px;">My goal is to create a moment they'll never forget.</p>
                 </div>
             </div>
@@ -654,6 +651,18 @@
                     <p>Streamline your team appreciation, event handouts, or large group distributions seamlessly.</p>
                 </div>
 
+                <!-- Step-by-step progress (Corporate form) -->
+                <div class="wizard-progress" id="bulk-wizard-progress">
+                    <div class="wizard-meta"><span id="bulk-wizard-label">Step 1 of 4</span></div>
+                    <div class="progress-track"><div class="progress-fill" id="bulk-wizard-fill"></div></div>
+                    <div class="wizard-steps" id="bulk-wizard-steps">
+                        <span class="active">Company &amp; contact</span>
+                        <span>Logistics</span>
+                        <span>Brand assets &amp; tier</span>
+                        <span>Branding context</span>
+                    </div>
+                </div>
+                <div class="step-panel active" data-step="1">
                 <section>
                     <div class="section-title">
                         <i data-lucide="building-2" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Company & Contact Details
@@ -665,7 +674,9 @@
                         <div class="form-group"><label>Phone Number <span>*</span></label><input type="text" id="bulk-phone" required placeholder="Your phone number"></div>
                     </div>
                 </section>
-
+                <div class="step-nav"><button type="button" class="btn-next" onclick="bulkWizardNext()">Next: Logistics &amp; Volumetrics →</button></div>
+                </div>
+                <div class="step-panel" data-step="2">
                 <section>
                     <div class="section-title">
                         <i data-lucide="truck" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Logistics & Volumetrics
@@ -685,6 +696,7 @@
                         <div class="form-group">
                             <label>Shipping / Distribution Style</label>
                             <select id="bulk-shipping">
+                                <option value="">Choose a shipping style…</option>
                                 <option value="single-location">Bulk single shipment to one physical location</option>
                                 <option value="individual-addresses">Individual drop-shipments directly to separate homes</option>
                             </select>
@@ -692,6 +704,7 @@
                         <div class="form-group">
                             <label>Per-Gift Budget Bracket</label>
                             <select id="bulk-budget">
+                                <option value="">Choose a budget bracket…</option>
                                 <option value="Under $30">Under $30 per gift</option>
                                 <option value="$30 - $60">$30 - $60 per gift</option>
                                 <option value="$60 - $100">$60 - $100 per gift</option>
@@ -700,17 +713,18 @@
                         </div>
                     </div>
                 </section>
-
+                <div class="step-nav"><button type="button" class="btn-back" onclick="bulkWizardBack()">← Back</button><button type="button" class="btn-next" onclick="bulkWizardNext()">Next: Brand Assets &amp; Tier →</button></div>
+                </div>
+                <div class="step-panel" data-step="3">
                 <section>
                     <div class="section-title">
                         <i data-lucide="palette" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Brand Assets & Identity
                     </div>
                     <div class="grid-2">
                         <div class="form-group">
-                            <label>Upload Corporate Logo (Vector, PNG, or JPEG):</label>
-                            <input type="file" id="bulk-logo-upload" accept="image/*">
+                            <label>Upload Corporate Logo(s) (Vector, PNG, or JPEG):</label>
+                            <input type="file" id="bulk-logo-upload" accept="image/*" multiple>
                             <div id="bulk-upload-status" style="font-size: 0.85rem; margin-top: 6px; color: var(--primary-color); font-weight: bold;"></div>
-                            <div style="font-size: 0.7rem; color: var(--text-light); line-height: 1.4; margin-top: 5px;"><i><b>To upload more than one photo:</b> Please email <b>info@dimbrightideas.com</b> or text/WhatsApp <b>(478) 382-0150</b>. Be sure to include your name or phone number so we can link them to your form.</i></div>
                         </div>
                         <div class="form-group">
                             <label>Brand Colors / Hex Codes:</label>
@@ -727,21 +741,21 @@
                         <label style="margin-bottom: 12px;">What level of customization is required across the order?</label>
                         <div class="radio-group" style="flex-direction: column; gap: 14px;">
                             <div class="radio-item" style="align-items: flex-start;">
-                                <input type="radio" name="bulk-personalization" id="p-tier1" value="Identical Branding" checked style="margin-top: 3px;">
+                                <input type="radio" name="bulk-personalization" id="p-tier1" value="Identical Branding" required style="margin-top: 3px;">
                                 <label for="p-tier1" style="font-weight: normal; cursor: pointer;">
                                     <strong>Tier 1: Identical Bulk Branding (Base Price)</strong><br>
                                     <span style="opacity: 0.8; font-size: 0.85rem;">Every item gets the same logo/design template. Best for event handouts or brand awareness.</span>
                                 </label>
                             </div>
                             <div class="radio-item" style="align-items: flex-start;">
-                                <input type="radio" name="bulk-personalization" id="p-tier2" value="Name Personalization" style="margin-top: 3px;">
+                                <input type="radio" name="bulk-personalization" id="p-tier2" value="Name Personalization" required style="margin-top: 3px;">
                                 <label for="p-tier2" style="font-weight: normal; cursor: pointer;">
                                     <strong>Tier 2: Team Personalization (+$5 - $10 per item)</strong><br>
                                     <span style="opacity: 0.8; font-size: 0.85rem;">Same core company design, but each item is individually personalized with a name or initials.</span>
                                 </label>
                             </div>
                             <div class="radio-item" style="align-items: flex-start;">
-                                <input type="radio" name="bulk-personalization" id="p-tier3" value="Unique Customization" style="margin-top: 3px;">
+                                <input type="radio" name="bulk-personalization" id="p-tier3" value="Unique Customization" required style="margin-top: 3px;">
                                 <label for="p-tier3" style="font-weight: normal; cursor: pointer;">
                                     <strong>Tier 3: Bespoke Personalization (+$15 - $25+ per item)</strong><br>
                                     <span style="opacity: 0.8; font-size: 0.85rem;">Each item features a unique design asset, specific personal quote, or complex individual details tailored to the specific recipient.</span>
@@ -750,7 +764,9 @@
                         </div>
                     </div>
                 </section>
-
+                <div class="step-nav"><button type="button" class="btn-back" onclick="bulkWizardBack()">← Back</button><button type="button" class="btn-next" onclick="bulkWizardNext()">Next: Branding Context →</button></div>
+                </div>
+                <div class="step-panel" data-step="4">
                 <section>
                     <div class="section-title">
                         <i data-lucide="briefcase" style="color: var(--primary-color); width: 18px; height: 18px;"></i> Branding Context
@@ -764,6 +780,8 @@
                         <textarea id="bulk-branding" placeholder="Would you like specific brand color assets matched, or custom printed insert cards?"></textarea>
                     </div>
                 </section>
+                <div class="step-nav"><button type="button" class="btn-back" onclick="bulkWizardBack()">← Back</button></div>
+                </div>
 
                 <button type="submit" class="submit-btn" id="bulkSubmitBtn">Submit Bulk Request</button>
                 <div id="bulk-form-message" style="margin-top: 15px; font-weight: bold; font-size: 0.95rem; display: none;"></div>
@@ -799,7 +817,7 @@
                 
                 <div class="side-card quote-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 30px 20px;">
                     <i data-lucide="sparkles" style="color: var(--primary-color); width: 26px; height: 26px; stroke-width: 1.5;"></i>
-                    <p style="font-family: 'Merriweather', serif; font-size: 1.0rem; font-weight: 700; line-height: 1.2; color: var(--text-color); margin: 0;">Flawless Execution.</p>
+                    <p style="font-family: 'DM Serif Display', serif; font-size: 1.0rem; font-weight: 700; line-height: 1.2; color: var(--text-color); margin: 0;">Flawless Execution.</p>
                     <p style="font-size: 0.8rem; font-weight: normal; opacity: 0.9; margin: 0; line-height: 1.3;">We blend your corporate brand standards with intentional craftsmanship to create lasting executive impact.</p>
                 </div>
             </div>
@@ -835,7 +853,8 @@ const PUSHOVER_USER_KEY = "ueb3ouifx46g56n7by3rfh198nmagb";
 const PUSHOVER_APP_TOKEN = "az24xk23yyn69ej8v363ke5u92v834"; 
 
 let uploadedImageUrls = [];
-let uploadedCorporateLogoUrl = ""; 
+let uploadedCorporateLogoUrl = "";
+let uploadedCorporateLogoUrls = []; 
 
 // View Switcher Engine
 function switchFormView(targetView) {
@@ -887,32 +906,37 @@ document.getElementById('photo-upload').addEventListener('change', async (e) => 
     statusDiv.innerText = `✨ ${uploadedImageUrls.length} photo(s) uploaded successfully!`;
 });
 
-// Cloudinary Corporate Logo Upload Handler (Bulk Orders)
+// Cloudinary Corporate Logo Upload Handler (Bulk Orders) — multi-file
 const bulkLogoInput = document.getElementById('bulk-logo-upload');
 if (bulkLogoInput) {
     bulkLogoInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
+        const files = e.target.files;
         const statusDiv = document.getElementById('bulk-upload-status');
-        uploadedCorporateLogoUrl = ""; 
+        uploadedCorporateLogoUrl = "";
+        uploadedCorporateLogoUrls = [];
 
-        if (!file) return;
-        if (statusDiv) statusDiv.innerText = "Uploading corporate logo...";
+        if (files.length === 0) return;
+        if (statusDiv) statusDiv.innerText = "Uploading corporate logo(s)...";
 
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', CLOUDINARY_PRESET);
+        for (let file of files) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_PRESET);
 
-        try {
-            let response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
-            let data = await response.json();
-            if (data.secure_url) {
-                uploadedCorporateLogoUrl = data.secure_url;
-                if (statusDiv) statusDiv.innerText = "✨ Corporate logo uploaded successfully!";
+            try {
+                let response = await fetch(CLOUDINARY_URL, { method: 'POST', body: formData });
+                let data = await response.json();
+                if (data.secure_url) {
+                    uploadedCorporateLogoUrls.push(data.secure_url);
+                }
+            } catch (err) {
+                console.error("Cloudinary Corporate Logo Upload Error:", err);
+                if (statusDiv) statusDiv.innerText = "Error uploading one or more logos.";
+                return;
             }
-        } catch (err) {
-            console.error("Cloudinary Corporate Logo Upload Error:", err);
-            if (statusDiv) statusDiv.innerText = "⚠️ Error uploading corporate logo.";
         }
+        uploadedCorporateLogoUrl = uploadedCorporateLogoUrls[0] || "";
+        if (statusDiv) statusDiv.innerText = `✨ ${uploadedCorporateLogoUrls.length} logo(s) uploaded successfully!`;
     });
 }
 
@@ -995,6 +1019,7 @@ document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
         occasionContext: document.getElementById('bulk-occasion').value,
         brandingDetails: document.getElementById('bulk-branding').value,
         corporateLogoUrl: uploadedCorporateLogoUrl,
+        corporateLogoUrls: uploadedCorporateLogoUrls,
         brandColors: document.getElementById('bulk-brand-colors').value,
         personalizationTier: getRadioValue('bulk-personalization'),
         status: "New Corporate Lead"
@@ -1018,6 +1043,7 @@ document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
             const bulkStatusDiv = document.getElementById('bulk-upload-status');
             if (bulkStatusDiv) bulkStatusDiv.innerText = "";
             uploadedCorporateLogoUrl = "";
+            uploadedCorporateLogoUrls = [];
             
             submitBtn.innerText = "Submit Bulk Request";
             submitBtn.disabled = false;
@@ -1176,6 +1202,59 @@ if (wizardSubmitBtn) {
   });
 })();
 showStep(1);
+
+// Corporate form step-by-step wizard (mirrors the Individual wizard).
+var bulkCurrentStep = 1;
+var BULK_TOTAL_STEPS = 4;
+function bulkShowStep(n) {
+    bulkCurrentStep = Math.max(1, Math.min(BULK_TOTAL_STEPS, n));
+    var panels = document.querySelectorAll('#bulkGiftForm .step-panel');
+    panels.forEach(function(p, i) { p.classList.toggle('active', i === bulkCurrentStep - 1); });
+    var fill = document.getElementById('bulk-wizard-fill');
+    if (fill) fill.style.width = (bulkCurrentStep / BULK_TOTAL_STEPS * 100) + '%';
+    var label = document.getElementById('bulk-wizard-label');
+    if (label) label.textContent = 'Step ' + bulkCurrentStep + ' of ' + BULK_TOTAL_STEPS;
+    var steps = document.querySelectorAll('#bulk-wizard-steps span');
+    steps.forEach(function(s, i) {
+        s.classList.toggle('active', i === bulkCurrentStep - 1);
+        s.classList.toggle('done', i < bulkCurrentStep - 1);
+    });
+    var submitBtn = document.querySelector('#bulkGiftForm .submit-btn');
+    if (submitBtn) submitBtn.style.display = (bulkCurrentStep === BULK_TOTAL_STEPS) ? '' : 'none';
+    var head = document.querySelector('#bulkGiftForm .form-header');
+    if (head) head.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function bulkWizardNext() {
+    var panel = document.querySelector('#bulkGiftForm .step-panel.active');
+    if (panel) {
+        var req = panel.querySelectorAll('[required]');
+        for (var i = 0; i < req.length; i++) {
+            if (!req[i].checkValidity()) { req[i].reportValidity(); return; }
+        }
+    }
+    bulkShowStep(bulkCurrentStep + 1);
+}
+function bulkWizardBack() { bulkShowStep(bulkCurrentStep - 1); }
+// Safety check on the final submit: if any required field in an earlier step
+// is empty, jump to that step instead of submitting. Never blocks a valid form.
+var bulkWizardSubmitBtn = document.querySelector('#bulkGiftForm .submit-btn');
+if (bulkWizardSubmitBtn) {
+    bulkWizardSubmitBtn.addEventListener('click', function(ev) {
+        var panels = document.querySelectorAll('#bulkGiftForm .step-panel');
+        for (var i = 0; i < panels.length; i++) {
+            var req = panels[i].querySelectorAll('[required]');
+            for (var j = 0; j < req.length; j++) {
+                if (!req[j].checkValidity()) {
+                    ev.preventDefault();
+                    bulkShowStep(i + 1);
+                    req[j].reportValidity();
+                    return;
+                }
+            }
+        }
+    });
+}
+bulkShowStep(1);
 
 // Initialize Vector Icon Mapping Layer
 lucide.createIcons();
