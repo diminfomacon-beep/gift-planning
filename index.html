@@ -849,8 +849,6 @@ const db = firebase.firestore();
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dpsmcu07f/image/upload";
 const CLOUDINARY_PRESET = "gift_planning";
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrk5yPmtqPmYs_HjBPnOJMJKg2Wnq90Z5WZeVUiEDeBcUglv-BBoBmK_CTnsA0F9KU1w/exec";
-const PUSHOVER_USER_KEY = "ueb3ouifx46g56n7by3rfh198nmagb";   
-const PUSHOVER_APP_TOKEN = "az24xk23yyn69ej8v363ke5u92v834"; 
 
 let uploadedImageUrls = [];
 let uploadedCorporateLogoUrl = "";
@@ -942,22 +940,14 @@ if (bulkLogoInput) {
 
 // Transactional Alert Notification Dispatcher
 function triggerPushoverAlert(title, messageContent) {
-    const url = "https://api.pushover.net/1/messages.json";
-    const payload = new URLSearchParams();
-    payload.append("token", PUSHOVER_APP_TOKEN);
-    payload.append("user", PUSHOVER_USER_KEY);
-    payload.append("title", title);
-    payload.append("message", messageContent);
-    payload.append("sound", "cashregister");
-
-    fetch(url, {
-        method: "POST",
-        body: payload,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" }
-    })
-    .then(response => response.json())
-    .then(data => console.log("Pushover notification dispatched:", data))
-    .catch(err => console.error("Pushover notification failed:", err));
+  fetch("https://script.google.com/macros/s/AKfycbx8J55LywCP5SefbQSuVZRR2Tv0p-kOEpJEnMewfzav0ioJsbw7Zu1qZYZK_FHMc-15/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ title: title, message: messageContent })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){ console.log("Pushover notification dispatched:", data); })
+  .catch(function(err){ console.error("Pushover notification failed:", err); });
 }
 
 // Spreadsheet Processing Intermediary Async Connector
