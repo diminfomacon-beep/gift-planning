@@ -303,6 +303,20 @@
         .radio-item:hover,
         .checkbox-item:hover {
             border-color: var(--primary-color);
+
+        /* QR explainer: shown when "Maybe / Tell me more" is picked. */
+        .qr-explainer {
+            margin-top: 12px;
+            padding: 14px 16px;
+            background: #fdf6e3;
+            border: 1px solid #e8d9a8;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.55;
+            color: #444;
+        }
+        .qr-explainer a { color: var(--primary-color); font-weight: 600; }
             background-color: var(--accent-soft);
         }
 
@@ -579,6 +593,9 @@
                             <div class="radio-item"><input type="radio" name="qr" id="qr1" value="Yes, absolutely!"><label for="qr1">Yes, absolutely!</label></div>
                             <div class="radio-item"><input type="radio" name="qr" id="qr2" value="No, keep it physical"><label for="qr2">No, keep it physical</label></div>
                             <div class="radio-item"><input type="radio" name="qr" id="qr3" value="Maybe, I want more details"><label for="qr3">Maybe / Tell me more</label></div>
+                        </div>
+                        <div class="qr-explainer" id="qr-explainer" hidden>
+                            A QR code on your gift that opens a personal message when scanned &mdash; a video, voice note, photo slideshow, or written letter. It turns the gift into something they can keep and replay. From $25, and 20% off when paired with a physical gift. <a href="../qr-gift-experience/">See the full menu &rarr;</a>
                         </div>
                     </div>
                 </section>
@@ -1162,6 +1179,13 @@ function showStep(n) {
     el.addEventListener('input', function () {
         var clean = el.value.replace(/[^0-9]/g, '');
         if (clean !== el.value) el.value = clean;
+    });
+});
+// QR explainer: show a short explanation when "Maybe / Tell me more" is picked.
+document.querySelectorAll('input[name="qr"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+        var ex = document.getElementById('qr-explainer');
+        if (ex) ex.hidden = !document.getElementById('qr3').checked;
     });
 });
 function wizardNext() {
