@@ -457,7 +457,7 @@
                     <div class="grid-2">
                         <div class="form-group"><label>Your Full Name <span>*</span></label><input type="text" id="cust-name" required placeholder="John Doe"></div>
                         <div class="form-group"><label>Email Address <span>*</span></label><input type="email" id="cust-email" required placeholder="john@example.com"></div>
-                        <div class="form-group"><label>Phone Number <span>*</span></label><input type="text" id="cust-phone" required placeholder="(555) 000-0000"></div>
+                        <div class="form-group"><label>Phone Number <span>*</span></label><input type="tel" id="cust-phone" required placeholder="(555) 000-0000" inputmode="numeric" pattern="[0-9]*" title="Numbers only"></div>
                         <div class="form-group">
                             <label>Preferred Contact Method <span>*</span></label>
                             <div class="radio-group">
@@ -671,7 +671,7 @@
                         <div class="form-group"><label>Company / Organization Name</label><input type="text" id="bulk-company" placeholder="Enter company name"></div>
                         <div class="form-group"><label>Contact Person Name <span>*</span></label><input type="text" id="bulk-contact" required placeholder="Your full name"></div>
                         <div class="form-group"><label>Email Address <span>*</span></label><input type="email" id="bulk-email" required placeholder="name@company.com"></div>
-                        <div class="form-group"><label>Phone Number <span>*</span></label><input type="text" id="bulk-phone" required placeholder="Your phone number"></div>
+                        <div class="form-group"><label>Phone Number <span>*</span></label><input type="tel" id="bulk-phone" required placeholder="Your phone number" inputmode="numeric" pattern="[0-9]*" title="Numbers only"></div>
                     </div>
                 </section>
                 <div class="step-nav"><button type="button" class="btn-next" onclick="bulkWizardNext()">Next: Logistics &amp; Volumetrics →</button></div>
@@ -985,6 +985,7 @@ function showMessage(elementId, message, success = true) {
 // Form Submission Engine: Bulk Corporate Requests
 document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    if (!e.target.checkValidity()) { e.target.reportValidity(); return; }
     const submitBtn = document.getElementById('bulkSubmitBtn');
     const msgDiv = document.getElementById('bulk-form-message');
     
@@ -1052,6 +1053,7 @@ document.getElementById('bulkGiftForm').addEventListener('submit', function(e) {
 // Form Submission Engine: Single Custom Gifts
 document.getElementById('giftForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    if (!e.target.checkValidity()) { e.target.reportValidity(); return; }
     const submitBtn = e.target.querySelector('.submit-btn');
     submitBtn.innerText = "Saving Submission...";
     submitBtn.disabled = true;
@@ -1152,6 +1154,16 @@ function showStep(n) {
     var head = document.querySelector('#giftForm .form-header');
     if (head) head.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+// Phone fields: numbers only. Strip anything that is not a digit as it is
+// typed or pasted, so a letter can never end up in the phone number.
+['cust-phone', 'bulk-phone'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', function () {
+        var clean = el.value.replace(/[^0-9]/g, '');
+        if (clean !== el.value) el.value = clean;
+    });
+});
 function wizardNext() {
     var panel = document.querySelector('#giftForm .step-panel.active');
     if (panel) {
